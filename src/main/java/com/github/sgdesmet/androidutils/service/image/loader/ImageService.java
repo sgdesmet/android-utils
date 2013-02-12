@@ -10,6 +10,7 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 import com.github.sgdesmet.androidutils.service.SimpleRestJSON;
 import com.github.sgdesmet.androidutils.util.AndroidUtils;
+import com.github.sgdesmet.androidutils.util.BitmapUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -85,7 +86,7 @@ public class ImageService extends IntentService {
             try {
                 byte[] image = getImage(uri.toString());
                 if (image != null && image.length != 0){
-                    bitmap = AndroidUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
+                    bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
                     getMemoryCache().put(uri.toString(), bitmap);
                 }
             } catch (IOException e) {

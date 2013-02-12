@@ -1,4 +1,4 @@
-package com.github.sgdesmet.androidutils.util;
+package com.github.sgdesmet.androidutils.dialogs;
 
 import android.R;
 import android.app.AlertDialog;
@@ -7,10 +7,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 /**
  * TODO description
@@ -20,11 +20,11 @@ import com.actionbarsherlock.app.SherlockDialogFragment;
  *
  * @author: sgdesmet
  */
-public class DefaultDialogs {
+public class DefaultDialogs implements IDefaultDialogs {
 
     private static final String YESNO = "yesno";
     private static final String OKAY = "okay";
-    SherlockDialogFragment dialogFragment;
+    DialogFragment dialogFragment;
     Context applicationContext;
 
     private static final String TAG = DefaultDialogs.class.getSimpleName();
@@ -33,6 +33,7 @@ public class DefaultDialogs {
         public static final DefaultDialogs INSTANCE= new DefaultDialogs();
     }
 
+    //TODO different implementations based on sherlock/support/normal
     public static DefaultDialogs getInstance(){
 
         return SingletonHolder.INSTANCE;
@@ -46,6 +47,7 @@ public class DefaultDialogs {
         getInstance().applicationContext = context;
     }
 
+    @Override
     public  void showProgressDialog(int resource, boolean cancelable, FragmentManager fm) {
         dismiss();
         if (dialogFragment == null && fm != null ){
@@ -54,19 +56,23 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public  void showProgressDialog(int resource, FragmentManager fm) {
         showProgressDialog(resource, false, fm);
     }
 
-    public void showErrorDialog(int message,  FragmentManager fm) {
+    @Override
+    public void showErrorDialog(int message, FragmentManager fm) {
         showErrorDialog(message, fm, false);
     }
 
-    public void showTerminatingErrorDialog(int message,  FragmentManager fm) {
+    @Override
+    public void showTerminatingErrorDialog(int message, FragmentManager fm) {
         showErrorDialog(message, fm, true);
     }
 
-    public void showErrorDialog(int message,  FragmentManager fm, boolean terminateApp) {
+    @Override
+    public void showErrorDialog(int message, FragmentManager fm, boolean terminateApp) {
 
         dismiss();
         if (dialogFragment == null && fm != null ){
@@ -76,6 +82,7 @@ public class DefaultDialogs {
     }
 
 
+    @Override
     public void dismiss(){
         if (dialogFragment != null){
             try {
@@ -89,6 +96,7 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public void showOneButtonDialog(final int titleResource, final int messageResource,
                                     final int buttonResourceText,
                                     final DialogInterface.OnClickListener buttonListener,
@@ -102,6 +110,7 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public void showOneButtonDialog(final String titleResource, final String messageResource,
                                     final String buttonResourceText,
                                     final DialogInterface.OnClickListener buttonListener,
@@ -114,6 +123,7 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public void showTwoButtonDialog(final int titleResource, final int messageResource,
                                     final int yesResourceText, final int noResourceText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
@@ -127,6 +137,7 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public void showCustomOneButtonDialog(final int titleResource, final View contentView,
                                           final int yesResourceText,
                                           final DialogInterface.OnClickListener yesListener,
@@ -139,10 +150,11 @@ public class DefaultDialogs {
         }
     }
 
+    @Override
     public void showCustomTwoButtonDialog(final int titleResource, final View contentView,
-                                    final int yesResourceText, final int noResourceText,
-                                    final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
-                                    FragmentManager fm) {
+                                          final int yesResourceText, final int noResourceText,
+                                          final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
+                                          FragmentManager fm) {
         dismiss();
         if (dialogFragment == null && fm != null ){
             dialogFragment = new TwoButtonDialog(applicationContext.getString(titleResource), contentView,
@@ -161,7 +173,7 @@ public class DefaultDialogs {
      *
      * @author: sgdesmet
      */
-    public static class AlertDialogFragment extends SherlockDialogFragment {
+    public static class AlertDialogFragment extends DialogFragment {
 
         private int messageResource;
 
@@ -215,7 +227,7 @@ public class DefaultDialogs {
      *
      * @author: sgdesmet
      */
-    public static class ProgressDialogFragment extends SherlockDialogFragment {
+    public static class ProgressDialogFragment extends DialogFragment {
 
         private int title;
         private boolean cancelable;
@@ -249,7 +261,7 @@ public class DefaultDialogs {
 
     }
 
-    protected static class OneButtonDialog extends SherlockDialogFragment{
+    protected static class OneButtonDialog extends DialogFragment{
 
         private String title;
         private String message;
@@ -291,7 +303,7 @@ public class DefaultDialogs {
         }
     }
 
-    protected static class TwoButtonDialog extends SherlockDialogFragment{
+    protected static class TwoButtonDialog extends DialogFragment{
 
         private String title;
         private String message;

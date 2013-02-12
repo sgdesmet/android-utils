@@ -68,19 +68,6 @@ public class AndroidUtils {
     }
 
     /**
-     * Get the size in bytes of a bitmap.
-     * @param bitmap
-     * @return size in bytes
-     */
-    public static int getBitmapSize(Bitmap bitmap) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            return bitmap.getByteCount();
-        }
-        // Pre HC-MR1
-        return bitmap.getRowBytes() * bitmap.getHeight();
-    }
-
-    /**
      * Check if external storage is built-in or removable.
      *
      * @return True if external storage is removable (like an SD card), false
@@ -237,50 +224,6 @@ public class AndroidUtils {
         return editText.getText().toString();
     }
 
-    public static Bitmap getThumbnail(Context context, Uri uri, int preferredSize) throws FileNotFoundException, IOException {
-        InputStream input = context.getContentResolver().openInputStream(uri);
-
-        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
-        onlyBoundsOptions.inJustDecodeBounds = true;
-        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
-        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
-        input.close();
-        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1))
-            return null;
-
-        int originalSize = (onlyBoundsOptions.outHeight < onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
-
-        double ratio = (originalSize > preferredSize) ? (originalSize / preferredSize) : 1.0;
-
-        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
-        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
-        input = context.getContentResolver().openInputStream(uri);
-        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-        input.close();
-        return bitmap;
-    }
-
-    private static int getPowerOfTwoForSampleRatio(double ratio){
-        int k = Integer.highestOneBit((int)Math.floor(ratio));
-        if(k==0) return 1;
-        else return k;
-    }
-
-    public static Bitmap.CompressFormat getImageType(Context context, Uri localImageUri){
-        ContentResolver cR = context.getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        String type = mime.getExtensionFromMimeType(cR.getType(localImageUri));
-        if ("jpeg".equals(type)){
-            return Bitmap.CompressFormat.JPEG;
-        } else if ("png".equals(type)){
-            return Bitmap.CompressFormat.PNG;
-        } else if ("webp".equals(type)){
-            return Bitmap.CompressFormat.WEBP;
-        } else
-            return Bitmap.CompressFormat.JPEG;
-    }
-
     public static int getCurrentApplicationVersion(Context context) {
         int v = 0;
         try {
@@ -290,22 +233,6 @@ public class AndroidUtils {
             Log.e(TAG, e.toString());
         }
         return v;
-    }
-
-    /**
-     * Decode image, with considerations for memory usage
-     * @param image
-     * @return
-     */
-    public static Bitmap decodeImageMemoryEfficient(byte[] image){
-        if (image != null){
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inTempStorage = new byte[16*1024];
-            options.inPurgeable = true;
-            options.inInputShareable = true;
-            return BitmapFactory.decodeByteArray(image, 0, image.length, options);
-        }
-        return null;
     }
 
     /**
@@ -360,28 +287,6 @@ public class AndroidUtils {
         }
         return size;
     }
-
-    /**
-     * Warning, expensive operation!
-     * @param applicationContext
-     * @param originalBitmap
-     * @return
-     */
-    public static Bitmap getBitmapWithShadow(Context applicationContext, Bitmap originalBitmap){
-        BlurMaskFilter blurFilter = new BlurMaskFilter(SHADOW_RADIUS, BlurMaskFilter.Blur.OUTER);
-        Paint shadowPaint = new Paint();
-        shadowPaint.setMaskFilter(blurFilter);
-
-        int[] offsetXY = new int[2];
-        Bitmap shadowImage = originalBitmap.extractAlpha(shadowPaint, offsetXY);
-        Bitmap shadowImage32 = shadowImage.copy(Bitmap.Config.ARGB_8888, true);
-
-        Canvas c = new Canvas(shadowImage32);
-        c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
-
-        return shadowImage32;
-    }
-
 
     public static boolean isIntentAvailable(Context context, String action) {
         final PackageManager packageManager = context.getPackageManager();
