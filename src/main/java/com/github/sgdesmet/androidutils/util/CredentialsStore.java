@@ -19,6 +19,7 @@ public class CredentialsStore {
     private static final String PREFS_FILE_NAME = "config";
 
     private Context context;
+    private String secret;
 
     private static class SingletonHolder{
         public static final CredentialsStore INSTANCE= new CredentialsStore();
@@ -33,8 +34,9 @@ public class CredentialsStore {
 
     }
 
-    public static void init(Context applicationContext){
+    public static void init(Context applicationContext, String secret){
         getInstance().context = applicationContext;
+        getInstance().secret = secret;
     }
 
     /******************
@@ -46,55 +48,57 @@ public class CredentialsStore {
      * this app.
      */
     public void store(String key, String value){
-        if (context != null){
-            SharedPreferences prefs = new ObscuredSharedPreferences(
-                    context, context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE) );
-            if (key != null){
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(key, value);
-                editor.commit();
-            }
-
+        if (context != null && key != null){
+            SharedPreferences prefs = getObscuredPreferences(PREFS_FILE_NAME, secret);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(key, value);
+            editor.commit();
         } else {
-            Log.e(TAG, "Context was null");
+            Log.e(TAG, "Context and key cannot be null");
         }
     }
 
     public String get(String key){
-        if (context != null){
-            SharedPreferences prefs = new ObscuredSharedPreferences(
-                    context, context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE) );
+        if (context != null && key != null){
+            SharedPreferences prefs = getObscuredPreferences(PREFS_FILE_NAME, secret);
             return prefs.getString(key, null);
         } else {
-            Log.e(TAG, "Context was null");
+            Log.e(TAG, "Context and key cannot be null");
             return null;
         }
     }
 
-    public void delete(String key, Context context){
-        if (context != null){
-            SharedPreferences prefs = new ObscuredSharedPreferences(
-                    context, context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE) );
+    public void delete(String key){
+        if (context != null && key != null){
+            SharedPreferences prefs = getObscuredPreferences(PREFS_FILE_NAME, secret);
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove(key);
             editor.commit();
         } else {
-            Log.e(TAG, "Context was null");
+            Log.e(TAG, "Context and key cannot be null");
         }
     }
 
     public void clearAllCredentials(){
         if (context != null){
-            SharedPreferences prefs = new ObscuredSharedPreferences(
-                    context, context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE) );
+            SharedPreferences prefs = getObscuredPreferences(PREFS_FILE_NAME, secret);
             SharedPreferences.Editor editor = prefs.edit();
             editor.clear();
             
             editor.commit();
 
         }  else {
-            Log.e(TAG, "Context was null");
+            Log.e(TAG, "Context and key cannot be nulll");
         }
+    }
+
+    private ObscuredSharedPreferences obscuredSharedPreferences;
+    protected ObscuredSharedPreferences getObscuredPreferences(String name, String secret){
+        if ( null == obscuredSharedPreferences ){
+            obscuredSharedPreferences = new ObscuredSharedPreferences(
+                    context, context.getSharedPreferences(name, Context.MODE_PRIVATE), secret );
+        }
+        return obscuredSharedPreferences;
     }
 
     public Context getContext() {
