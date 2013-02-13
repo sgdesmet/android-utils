@@ -97,4 +97,11 @@ public class CredentialsStore {
         }
     }
 
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }

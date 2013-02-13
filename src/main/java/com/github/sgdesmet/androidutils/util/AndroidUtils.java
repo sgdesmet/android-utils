@@ -52,7 +52,6 @@ public class AndroidUtils {
     private static final String TAG = AndroidUtils.class.getSimpleName();
     private static final String PICTURES_DIR = "Pictures";
     private static final String MOVIES_DIR = "Movies";
-    public static final int SHADOW_RADIUS = 6;
 
     private AndroidUtils() {};
 
