@@ -108,4 +108,12 @@ public class CredentialsStore {
     public void setContext(Context context) {
         this.context = context;
     }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 }
