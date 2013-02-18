@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
@@ -24,7 +25,7 @@ public class DefaultDialogs implements IDefaultDialogs {
 
     private static final String YESNO = "yesno";
     private static final String OKAY = "okay";
-    DialogFragment dialogFragment;
+    BaseDialogFragment dialogFragment;
     Context applicationContext;
 
     private static final String TAG = DefaultDialogs.class.getSimpleName();
@@ -173,7 +174,7 @@ public class DefaultDialogs implements IDefaultDialogs {
      *
      * @author: sgdesmet
      */
-    public static class AlertDialogFragment extends DialogFragment {
+    public static class AlertDialogFragment extends BaseDialogFragment {
 
         private int messageResource;
 
@@ -227,7 +228,7 @@ public class DefaultDialogs implements IDefaultDialogs {
      *
      * @author: sgdesmet
      */
-    public static class ProgressDialogFragment extends DialogFragment {
+    public static class ProgressDialogFragment extends BaseDialogFragment {
 
         private int title;
         private boolean cancelable;
@@ -261,7 +262,7 @@ public class DefaultDialogs implements IDefaultDialogs {
 
     }
 
-    protected static class OneButtonDialog extends DialogFragment{
+    protected static class OneButtonDialog extends BaseDialogFragment{
 
         private String title;
         private String message;
@@ -303,7 +304,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
     }
 
-    protected static class TwoButtonDialog extends DialogFragment{
+    protected static class TwoButtonDialog extends BaseDialogFragment{
 
         private String title;
         private String message;
@@ -351,6 +352,30 @@ public class DefaultDialogs implements IDefaultDialogs {
                 builder.setView(customView);
 
             return builder.create();
+        }
+    }
+
+    protected static class BaseDialogFragment extends DialogFragment {
+
+        @Override
+        public void show(FragmentManager manager, String tag) {
+            try {
+                //nasty hack for http://code.google.com/p/android/issues/detail?id=23096 :/
+                super.show(manager, tag);
+            } catch (IllegalStateException e){
+                Log.w(TAG, "Ignoring IllegalStateException...");
+            }
+        }
+
+        @Override
+        public int show(FragmentTransaction transaction, String tag) {
+            try {
+                //nasty hack for http://code.google.com/p/android/issues/detail?id=23096 :/
+                return super.show(transaction, tag);
+            } catch (IllegalStateException e){
+                Log.w(TAG, "Ignoring IllegalStateException...");
+                return  -1;
+            }
         }
     }
 }
