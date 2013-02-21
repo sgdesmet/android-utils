@@ -1,4 +1,4 @@
-package com.github.sgdesmet.androidutils.service.image.loader;
+package com.github.sgdesmet.androidutils.service.image.loader.impl;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import android.os.ResultReceiver;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import com.github.sgdesmet.androidutils.service.SimpleRestJSON;
-import com.github.sgdesmet.androidutils.util.AndroidUtils;
+import com.github.sgdesmet.androidutils.service.image.loader.ImageLoaderFactory;
 import com.github.sgdesmet.androidutils.util.BitmapUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -80,7 +80,7 @@ public class ImageService extends IntentService {
         } else {
             try {
                 //see if we still need the imagefactory
-                if (ImageLoaderFactory.get().wantsUrl(uri.toString())){
+                if (ImageLoaderFactory.get().isUrlpending(uri.toString())){
                     byte[] image = getImage(uri.toString());
                     if (image != null && image.length != 0){
                         bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
