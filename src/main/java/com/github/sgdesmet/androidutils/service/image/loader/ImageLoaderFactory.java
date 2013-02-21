@@ -52,6 +52,8 @@ public class ImageLoaderFactory {
 
         private Context applicationContext;
 
+
+
         public ImageLoader(){
             urlForView = new WeakHashMap<ImageView, String>();
             missingResourceForView = new WeakHashMap<ImageView, Integer>();
@@ -103,30 +105,32 @@ public class ImageLoaderFactory {
                 view.setImageBitmap(null);
             } //don't do anything for KEEP_CURRENT
 
-            //adjust waiting states
-            //synchronization note: we're not using synchronized maps here, as this is not necessary
-            //since all manipulation of these maps is done on the main thread (and thus serialized).
-            WeakReference<ImageView> reference = new WeakReference<ImageView>(view); //keep weak references, don't keep imageviews around forever!
-            //set imageurl as desired image for the view, override previous
-            urlForView.put(view, url);
+            synchronized (this){
+                //adjust waiting states
+                //synchronization note: we're not using synchronized maps here, as this is not necessary
+                //since all manipulation of these maps is done on the main thread (and thus serialized).
+                WeakReference<ImageView> reference = new WeakReference<ImageView>(view); //keep weak references, don't keep imageviews around forever!
+                //set imageurl as desired image for the view, override previous
+                urlForView.put(view, url);
 
-            if (missingResource !=  loadingResource) //don't set missing resource if it's the same as loading resource, no necessary
-                missingResourceForView.put(view, missingResource);
-            //add view to list of views to notify when image has been downloaded
-            if (viewsToNotify.get(url) == null){
-                viewsToNotify.put(url, new HashSet<WeakReference<ImageView>>());
-                viewsToNotify.get(url).add(reference);
-                // nobody was downloading this yet, send intent
-                Intent intent = new Intent(applicationContext, ImageService.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                intent.putExtra(ImageService.EXTRA_CALLBACK, new ImageHandler(new Handler()));
-                //TODO don't start immediatly, but add to a queue which we can cancel if needed?
-                applicationContext.startService(intent);
-            } else  {
-                //download is already queued, just add ourselves to the list of views to be notified when
-                //download finishes
-                viewsToNotify.get(url).add(reference);
+                if (missingResource !=  loadingResource) //don't set missing resource if it's the same as loading resource, no necessary
+                    missingResourceForView.put(view, missingResource);
+                //add view to list of views to notify when image has been downloaded
+                if (viewsToNotify.get(url) == null){
+                    viewsToNotify.put(url, new HashSet<WeakReference<ImageView>>());
+                    viewsToNotify.get(url).add(reference);
+                    // nobody was downloading this yet, send intent
+                    Intent intent = new Intent(applicationContext, ImageService.class);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    intent.putExtra(ImageService.EXTRA_CALLBACK, new ImageHandler(new Handler()));
+                    //TODO don't start immediatly, but add to a queue which we can cancel if needed?
+                    applicationContext.startService(intent);
+                } else  {
+                    //download is already queued, just add ourselves to the list of views to be notified when
+                    //download finishes
+                    viewsToNotify.get(url).add(reference);
+                }
             }
         }
 
@@ -145,21 +149,51 @@ public class ImageLoaderFactory {
             //adjust waiting states
             //synchronization note: we're not using synchronized maps here, as this is not necessary
             //since all manipulation of these maps is done on the main thread (and thus serialized).
-
+            synchronized (this){
             //add callback to list of callbacks to notify when image has been downloaded
-            if (callbacksToNotify.get(url) == null){
-                callbacksToNotify.put(url, new HashSet<ImageCallback>());
-                callbacksToNotify.get(url).add(callback);
-                // nobody was downloading this yet, send intent
-                Intent intent = new Intent(applicationContext, ImageService.class);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-                intent.putExtra(ImageService.EXTRA_CALLBACK, new ImageHandler(new Handler()));
-                applicationContext.startService(intent);
-            } else  {
-                //download is already queued, just add ourselves to the list of callbacks to be notified when
-                //download finishes
-                callbacksToNotify.get(url).add(callback);
+                if (callbacksToNotify.get(url) == null){
+                    callbacksToNotify.put(url, new HashSet<ImageCallback>());
+                    callbacksToNotify.get(url).add(callback);
+                    // nobody was downloading this yet, send intent
+                    Intent intent = new Intent(applicationContext, ImageService.class);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    intent.putExtra(ImageService.EXTRA_CALLBACK, new ImageHandler(new Handler()));
+                    applicationContext.startService(intent);
+                } else  {
+                    //download is already queued, just add ourselves to the list of callbacks to be notified when
+                    //download finishes
+                    callbacksToNotify.get(url).add(callback);
+                }
+            }
+        }
+
+        /**
+         * Return true if url is still required
+         * @param url
+         * @return
+         */
+        public boolean wantsUrl(String url){
+            synchronized (this){
+                //check if there are views that want the url
+                Set<WeakReference<ImageView>> pendingViews = viewsToNotify.get(url);
+                for(WeakReference<ImageView> viewReference : pendingViews){
+                    if (viewReference.get() != null){
+                        ImageView view = viewReference.get();
+                        if (urlForView.containsKey(view)
+                                && urlForView.get(view).equals(url)){
+                            return true;
+                        }
+                    }
+                }
+
+                //check if there are images that want the url
+                Set<ImageCallback> pendingCallbacks = callbacksToNotify.get(url);
+                if (pendingCallbacks != null && !pendingCallbacks.isEmpty())
+                    return true;
+
+                //nobody wants the url anymore
+                return false;
             }
         }
 

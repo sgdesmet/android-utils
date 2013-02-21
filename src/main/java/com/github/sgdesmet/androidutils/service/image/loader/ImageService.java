@@ -20,7 +20,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 
 /**
- * TODO description
+ * TODO It's stupid to put this in a service, migrate this code to imageloaderfactory, and use thread pools
  * <p/>
  * Date: 04/10/12
  * Time: 17:13
@@ -39,11 +39,6 @@ public class ImageService extends IntentService {
     public static final String RESULT_URI = BASE + ".Uri";
 
     public static final String EXTRA_CALLBACK = BASE + ".Callback";
-
-    private static final String LOCAL_CONTENT = "content";
-    private static final String LOCAL_FILE = "file";
-
-    private static final String TRUSTSTORE_PASSWORD = "secret";
 
     private static final int MEMORY_CACHE = 2 * 1024 * 1024;
     private static LruCache<String,Bitmap> memoryCache;
@@ -84,10 +79,13 @@ public class ImageService extends IntentService {
             bitmap = getMemoryCache().get(uri.toString());
         } else {
             try {
-                byte[] image = getImage(uri.toString());
-                if (image != null && image.length != 0){
-                    bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
-                    getMemoryCache().put(uri.toString(), bitmap);
+                //see if we still need the imagefactory
+                if (ImageLoaderFactory.get().wantsUrl(uri.toString())){
+                    byte[] image = getImage(uri.toString());
+                    if (image != null && image.length != 0){
+                        bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
+                        getMemoryCache().put(uri.toString(), bitmap);
+                    }
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error while getting image (from " + uri + "): " + e);
