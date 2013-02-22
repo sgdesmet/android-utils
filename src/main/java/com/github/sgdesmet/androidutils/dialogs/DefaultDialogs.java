@@ -269,7 +269,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         private String neutralButton;
         private DialogInterface.OnClickListener neutralListener;
         private View customView;
-        private boolean cancelable = true;
+        private boolean cancelable = false;
 
         public OneButtonDialog(String title, String message, String neutralButton, DialogInterface.OnClickListener neutralListener) {
             this.title = title;
@@ -289,13 +289,12 @@ public class DefaultDialogs implements IDefaultDialogs {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             setRetainInstance(true);
-            setCancelable(true);
+            setCancelable(cancelable);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(cancelable)
                     .setTitle(title)
                     .setMessage(message)
-                    .setNeutralButton(neutralButton, neutralListener)
-                    .setCancelable(true);
+                    .setNeutralButton(neutralButton, neutralListener);
 
             if (customView != null)
                 builder.setView(customView);
@@ -313,7 +312,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         private String noButton;
         private DialogInterface.OnClickListener noListener;
         private View customView;
-        private boolean cancelable = true;
+        private boolean cancelable = false;
 
         public TwoButtonDialog(String title, String message, String yesButton, DialogInterface.OnClickListener yesListener,
                                String noButton, DialogInterface.OnClickListener noListener) {
@@ -339,14 +338,13 @@ public class DefaultDialogs implements IDefaultDialogs {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
             setRetainInstance(true);
-            setCancelable(true);
+            setCancelable(cancelable);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setCancelable(cancelable)
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(yesButton, yesListener)
-                    .setNegativeButton(noButton, noListener)
-                    .setCancelable(cancelable);
+                    .setNegativeButton(noButton, noListener);
 
             if (customView != null)
                 builder.setView(customView);
