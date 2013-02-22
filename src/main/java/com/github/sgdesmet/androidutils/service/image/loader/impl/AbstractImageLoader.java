@@ -152,15 +152,16 @@ public abstract class AbstractImageLoader implements ImageLoader {
         synchronized (this){
             //check if there are views that want the url
             Set<WeakReference<ImageView>> pendingViews = viewsToNotify.get(url);
-            for(WeakReference<ImageView> viewReference : pendingViews){
-                if (viewReference.get() != null){
-                    ImageView view = viewReference.get();
-                    if (urlForView.containsKey(view)
-                            && urlForView.get(view).equals(url)){
-                        return true;
+            if (pendingViews != null)
+                for(WeakReference<ImageView> viewReference : pendingViews){
+                    if (viewReference.get() != null){
+                        ImageView view = viewReference.get();
+                        if (urlForView.containsKey(view)
+                                && urlForView.get(view).equals(url)){
+                            return true;
+                        }
                     }
                 }
-            }
 
             //check if there are images that want the url
             Set<ImageCallback> pendingCallbacks = callbacksToNotify.get(url);

@@ -1,7 +1,6 @@
 package com.github.sgdesmet.androidutils.service.image.loader;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import com.github.sgdesmet.androidutils.service.image.loader.impl.AbstractImageLoader;
 import com.github.sgdesmet.androidutils.service.image.loader.impl.IntentServiceImageLoader;
 
