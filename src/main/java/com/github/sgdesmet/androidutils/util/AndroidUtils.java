@@ -234,6 +234,17 @@ public class AndroidUtils {
         return v;
     }
 
+    public static String getCurrentPackageName(Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).packageName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // Huh? Really?
+            Log.e(TAG, e.toString());
+            throw new RuntimeException(e);
+        }
+    }
+
+
     /**
      * Checks if we are online. Note that an internet connection might be reported,
      * but but that does not necessarily mean it's usable (eg. VPN, no DNS, ...)
