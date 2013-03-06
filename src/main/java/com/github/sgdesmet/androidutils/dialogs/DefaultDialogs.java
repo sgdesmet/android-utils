@@ -139,6 +139,20 @@ public class DefaultDialogs implements IDefaultDialogs {
     }
 
     @Override
+    public void showTwoButtonDialog(final String title, final String message,
+                                    final String yesText, final String noText,
+                                    final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
+                                    FragmentManager fm) {
+        dismiss();
+        if (dialogFragment == null && fm != null ){
+            dialogFragment = new TwoButtonDialog(title,
+                    message, yesText,
+                    yesListener, noText, noListener);
+            dialogFragment.show(fm, YESNO);
+        }
+    }
+
+    @Override
     public void showCustomOneButtonDialog(final int titleResource, final View contentView,
                                           final int yesResourceText,
                                           final DialogInterface.OnClickListener yesListener,

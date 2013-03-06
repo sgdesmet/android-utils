@@ -40,6 +40,11 @@ public interface IDefaultDialogs {
                              DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener,
                              FragmentManager fm);
 
+    public void showTwoButtonDialog(final String title, final String message,
+                                    final String yesText, final String noText,
+                                    final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
+                                    FragmentManager fm);
+
     void showCustomOneButtonDialog(int titleResource, View contentView,
                                    int yesResourceText,
                                    DialogInterface.OnClickListener yesListener,

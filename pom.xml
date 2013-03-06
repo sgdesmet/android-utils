@@ -6,7 +6,7 @@
 	<groupId>com.github.sgdesmet</groupId>
 	<artifactId>android-utils</artifactId>
 	<packaging>jar</packaging>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 
 	<name>Android Utils</name>
 	<description>Collection of Utilities for Android</description>
