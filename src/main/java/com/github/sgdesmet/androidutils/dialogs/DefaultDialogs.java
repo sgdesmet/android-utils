@@ -244,21 +244,43 @@ public class DefaultDialogs implements IDefaultDialogs {
      */
     public static class ProgressDialogFragment extends BaseDialogFragment {
 
-        private int title;
+        private static final String TITLE = "title";
+        private static final String CANCELABLE = "cancelable";
+        private int titleResource;
         private boolean cancelable;
 
+        public ProgressDialogFragment() {
+            titleResource = -1;
+            cancelable = true;
+        }
+
         public ProgressDialogFragment(int title, boolean cancelable) {
-            this.title = title;
+            this.titleResource = title;
             this.cancelable = cancelable;
         }
 
         @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
             setRetainInstance(true);
+            if (savedInstanceState != null){
+                titleResource = savedInstanceState.getInt(TITLE);
+                cancelable = savedInstanceState.getBoolean(CANCELABLE);
+            }
+        }
 
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);    //TODO implement
+
+            outState.putInt(TITLE, titleResource);
+            outState.putBoolean(CANCELABLE, cancelable);
+        }
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
             ProgressDialog dialog = new ProgressDialog(getActivity());
-            dialog.setMessage(getString(title, true));
+            dialog.setMessage(getString(titleResource, true));
             dialog.setIndeterminate(true);
             dialog.setCancelable(cancelable);
             setCancelable(cancelable);
@@ -285,6 +307,9 @@ public class DefaultDialogs implements IDefaultDialogs {
         private View customView;
         private boolean cancelable = false;
 
+        public OneButtonDialog() {
+        }
+
         public OneButtonDialog(String title, String message, String neutralButton, DialogInterface.OnClickListener neutralListener) {
             this.title = title;
             this.message = message;
@@ -300,20 +325,28 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
+
+        @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            setRetainInstance(true);
-            setCancelable(cancelable);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setCancelable(cancelable)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setNeutralButton(neutralButton, neutralListener);
+            if (neutralListener != null){
+                setCancelable(cancelable);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(cancelable)
+                        .setTitle(title)
+                        .setMessage(message)
+                        .setNeutralButton(neutralButton, neutralListener);
 
-            if (customView != null)
-                builder.setView(customView);
+                if (customView != null)
+                    builder.setView(customView);
 
-            return builder.create();
+                return builder.create();
+            }
+            return super.onCreateDialog(savedInstanceState);
         }
     }
 
@@ -327,6 +360,9 @@ public class DefaultDialogs implements IDefaultDialogs {
         private DialogInterface.OnClickListener noListener;
         private View customView;
         private boolean cancelable = false;
+
+        public TwoButtonDialog() {
+        }
 
         public TwoButtonDialog(String title, String message, String yesButton, DialogInterface.OnClickListener yesListener,
                                String noButton, DialogInterface.OnClickListener noListener) {
@@ -349,21 +385,29 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setRetainInstance(true);
+        }
+
+        @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            setRetainInstance(true);
-            setCancelable(cancelable);
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setCancelable(cancelable)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setPositiveButton(yesButton, yesListener)
-                    .setNegativeButton(noButton, noListener);
+            if (yesListener != null && noListener != null){
+                setCancelable(cancelable);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(cancelable)
+                        .setTitle(title)
+                        .setMessage(message)
+                        .setPositiveButton(yesButton, yesListener)
+                        .setNegativeButton(noButton, noListener);
 
-            if (customView != null)
-                builder.setView(customView);
+                if (customView != null)
+                    builder.setView(customView);
 
-            return builder.create();
+                return builder.create();
+            }
+            return super.onCreateDialog(savedInstanceState);
         }
     }
 
