@@ -216,7 +216,10 @@ public class RestService extends IntentService {
 
         @Override
         public void onJsonParseError(String message) {
-            Log.e(TAG, "JSON parse error: " + message + " for " + getOriginalIntentString());
+            String errMessage = "JSON parse error: " + message + " for " + getOriginalIntentString();
+            Log.e(TAG, errMessage);
+            Bundle bundle = getBundleWithOriginalIntent();
+            bundle.putString(RESULT, errMessage);
             callback.send(RESULT_CODE_PARSE_ERROR, getBundleWithOriginalIntent());
         }
 
