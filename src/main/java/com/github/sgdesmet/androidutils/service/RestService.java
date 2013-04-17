@@ -69,7 +69,7 @@ public class RestService extends IntentService {
     protected static final String HTTPS = "https";
     private static final String CACHE_CONTROL = "Cache-Control";
 
-    protected Gson gson = null;
+    protected static Gson gson = null;
 
     public RestService() {
         super(TAG);
@@ -80,18 +80,21 @@ public class RestService extends IntentService {
         super.onCreate();
 
         Log.d(TAG, "Service created");
+        configure();
+    }
 
-//        GsonBuilder gsonBuilder = new GsonBuilder()
-//                .setPrettyPrinting()
-//                .disableHtmlEscaping()
-//                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    protected void configure(){
+    }
 
-        GsonBuilder gsonBuilder = new GsonBuilder()
-                .setPrettyPrinting()
-                .disableHtmlEscaping()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss Z");
-
-        gson = gsonBuilder.create();
+    protected Gson getGsonConfig(){
+        if (gson == null){
+            GsonBuilder gsonBuilder = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .disableHtmlEscaping()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss Z");
+            gson = gsonBuilder.create();
+        }
+        return gson;
     }
 
     @Override
@@ -130,7 +133,7 @@ public class RestService extends IntentService {
 
 
         SimpleRestJSON rest = SimpleRestJSON.getInstance();
-        if (gson != null)
+        if (getGsonConfig() != null)
             rest.setGson(gson);
         SimpleRestJSON.RestCallback resultHandler = getResultHandler(callback, intent);
 

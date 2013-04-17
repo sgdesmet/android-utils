@@ -234,7 +234,6 @@ public class SimpleRestJSON {
                 ((HttpsURLConnection)connection).setSSLSocketFactory(sslContext.getSocketFactory());
             }
             connection.setDoOutput(method != HttpMethod.GET && method != HttpMethod.DELETE);
-//            connection.setChunkedStreamingMode(0);
             connection.setConnectTimeout(TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
             connection.setReadTimeout(TIMEOUT);
             connection.setDoInput(true);
