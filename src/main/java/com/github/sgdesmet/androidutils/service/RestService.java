@@ -80,10 +80,9 @@ public class RestService extends IntentService {
         super.onCreate();
 
         Log.d(TAG, "Service created");
-        configure();
     }
 
-    protected void configure(){
+    protected void configureSimpleRestJSON(SimpleRestJSON rest){
     }
 
     protected Gson getGsonConfig(){
@@ -135,6 +134,8 @@ public class RestService extends IntentService {
         SimpleRestJSON rest = SimpleRestJSON.getInstance();
         if (getGsonConfig() != null)
             rest.setGson(gson);
+        configureSimpleRestJSON(rest);
+
         SimpleRestJSON.RestCallback resultHandler = getResultHandler(callback, intent);
 
         if (username != null || password != null){
