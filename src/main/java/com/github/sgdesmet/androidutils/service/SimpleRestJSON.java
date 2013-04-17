@@ -52,6 +52,7 @@ public class SimpleRestJSON {
     private Map<String,String> requestHeaders;
 
     private SSLContext sslContext;
+    private boolean gzipEnabled;
 
     protected Gson gson;
 
@@ -73,7 +74,7 @@ public class SimpleRestJSON {
         gson = gsonBuilder.create();
 
         requestHeaders = new HashMap<String, String>();
-
+        gzipEnabled = true;
     }
 
     public Gson getGson() {
@@ -151,6 +152,14 @@ public class SimpleRestJSON {
 
     public void setSslContext(SSLContext sslContext) {
         this.sslContext = sslContext;
+    }
+
+    public boolean isGzipEnabled() {
+        return gzipEnabled;
+    }
+
+    public void setGzipEnabled(boolean gzipEnabled) {
+        this.gzipEnabled = gzipEnabled;
     }
 
     /**
@@ -237,6 +246,10 @@ public class SimpleRestJSON {
 
             connection.setRequestMethod(method.toString());
             connection.setRequestProperty(ACCEPT, ACCEPT_JSON);
+
+            if (!gzipEnabled){
+                connection.setRequestProperty("Accept-Encoding", "identity");
+            }
 
             if (requestHeaders != null ){
                 for (String headerName : this.requestHeaders.keySet()) {
