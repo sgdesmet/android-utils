@@ -333,8 +333,8 @@ public class SimpleRestJSON {
             Scanner scanner = new Scanner(connection.getErrorStream(), "UTF-8").useDelimiter("\\A");
             if (scanner.hasNext())
                 body = scanner.next();
+            errorStream.close();
         }
-        errorStream.close();
         return body;
     }
 
