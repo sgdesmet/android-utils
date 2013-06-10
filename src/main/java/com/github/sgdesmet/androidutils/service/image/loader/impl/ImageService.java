@@ -111,8 +111,8 @@ public class ImageService extends IntentService {
         InputStream is = null;
         try {
             connection = (HttpURLConnection) new URL(imageUrl).openConnection();
-            connection.setConnectTimeout( HttpResource.TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
-            connection.setReadTimeout( HttpResource.TIMEOUT);
+            connection.setConnectTimeout( HttpResource.DEFAULT_TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
+            connection.setReadTimeout( HttpResource.DEFAULT_TIMEOUT);
             //TODO cache-control?
 
             is = connection.getInputStream();

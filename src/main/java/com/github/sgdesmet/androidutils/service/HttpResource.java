@@ -39,7 +39,7 @@ public class HttpResource {
     private static final String ACCEPT_JSON     = "application/json";
     private static final String CONTENT_TYPE    = "Content-Type";
     private static final String TAG             = HttpResource.class.getSimpleName();
-    private static final int    DEFAULT_TIMEOUT = 30000;
+    public static final int    DEFAULT_TIMEOUT = 30000;
 
 
     public enum HttpMethod {
