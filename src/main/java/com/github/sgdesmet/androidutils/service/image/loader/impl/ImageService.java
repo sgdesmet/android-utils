@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.v4.util.LruCache;
 import android.util.Log;
-import com.github.sgdesmet.androidutils.service.SimpleRestJSON;
+import com.github.sgdesmet.androidutils.service.HttpResource;
 import com.github.sgdesmet.androidutils.service.image.loader.ImageLoaderFactory;
 import com.github.sgdesmet.androidutils.util.BitmapUtils;
 
@@ -111,8 +111,8 @@ public class ImageService extends IntentService {
         InputStream is = null;
         try {
             connection = (HttpURLConnection) new URL(imageUrl).openConnection();
-            connection.setConnectTimeout(SimpleRestJSON.TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
-            connection.setReadTimeout(SimpleRestJSON.TIMEOUT);
+            connection.setConnectTimeout( HttpResource.TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
+            connection.setReadTimeout( HttpResource.TIMEOUT);
             //TODO cache-control?
 
             is = connection.getInputStream();
