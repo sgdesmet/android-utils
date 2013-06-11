@@ -179,6 +179,7 @@ public class RestService extends IntentService {
                 for (String headerValue : headers.get( key )) {
                     value += headerValue + ",";
                 }
+                value = value.substring( 0, Math.max( 0, value.length() -1 ) );
                 bundle.putString( key, value );
             }
             return bundle;
