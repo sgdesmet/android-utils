@@ -118,7 +118,7 @@ public class RestService extends IntentService {
             Log.e( TAG, "I/O Error: " + e, e );
             Bundle bundle = new Bundle();
             bundle.putParcelable( RESULT_ORIGINAL_INTENT, intent );
-
+            bundle.putString( RESULT, "I/O Error: " + e );
             callback.send( -1, bundle );
         }
     }

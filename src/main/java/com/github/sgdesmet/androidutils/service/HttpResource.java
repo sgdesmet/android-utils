@@ -1,13 +1,11 @@
 package com.github.sgdesmet.androidutils.service;
 
-import android.os.Build;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.codec.binary.Base64;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.*;
@@ -86,7 +84,7 @@ public class HttpResource {
         String encodedCredentials = new String(
                 Base64.encodeBase64( ((username != null? username: "") + ":" + (password != null? password: "")).getBytes() ) );
 
-        headers.put( AUTHORIZATION_BASIC, encodedCredentials );
+        headers.put( AUTHORIZATION_HEADER, String.format( "%s %s", AUTHORIZATION_BASIC, encodedCredentials ) );
         return this;
     }
 
@@ -175,7 +173,7 @@ public class HttpResource {
             }
 
             //receive response & parse
-            if (requestSuccess( connection )) {
+            if (success( connection )) {
                 Serializable json = parseJSON( connection.getInputStream(), expectedResultType );
                 callback.onResponse( json, connection.getResponseCode(), connection.getHeaderFields() );
             } else {
@@ -283,7 +281,7 @@ public class HttpResource {
     /**
      * Returns true if status code returned is not an error
      */
-    protected boolean requestSuccess(final HttpURLConnection connection)
+    protected boolean success(final HttpURLConnection connection)
             throws IOException {
 
         return connection.getResponseCode() >= 200 && connection.getResponseCode() < 300;
