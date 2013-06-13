@@ -39,6 +39,7 @@ public class RestService extends IntentService {
     public static final String BASIC_AUTH_PASSWORD = BASE + ".Password";
     public static final String QUERY_PARAMS        = BASE + ".Params";
     public static final String HEADERS             = BASE + ".Headers";
+    public static final String TIMEOUT             = BASE + ".Timeout";
 
     public static final String RESULT                 = BASE + ".Result";
     public static final String HTTP_STATUS            = BASE + ".HttpStatus";
@@ -95,10 +96,13 @@ public class RestService extends IntentService {
         String username = extras.getString( BASIC_AUTH_USERNAME );
         String password = extras.getString( BASIC_AUTH_PASSWORD );
 
+
         HttpResource resource = HttpResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers );
         if (username != null || password != null) {
             resource.basicAuth( username, password );
         }
+        if (extras.containsKey( TIMEOUT ))
+            resource.timeout( extras.getInt( TIMEOUT ) );
         configure( resource );
 
         try {
