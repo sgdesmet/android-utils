@@ -17,25 +17,13 @@ import java.util.*;
 public class SimpleListAdapter extends BaseAdapter {
 
     private List<ListItem> items;
-    private Context              applicationContext;
 
-    public SimpleListAdapter(final List<ListItem> items, Context applicationContext) {
+    public SimpleListAdapter(final List<ListItem> items) {
 
         if (items != null)
             this.items = items;
         else
             this.items = Collections.emptyList();
-        this.applicationContext = applicationContext;
-    }
-
-    public Context getApplicationContext() {
-
-        return applicationContext;
-    }
-
-    public void setApplicationContext(final Context applicationContext) {
-
-        this.applicationContext = applicationContext;
     }
 
     public List<ListItem> getItems() {
