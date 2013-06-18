@@ -86,7 +86,7 @@ public class SimpleListAdapter extends BaseAdapter {
         for (ListItem item : getItems()){
             types.add( item.viewType() );
         }
-        return types.size();
+        return Math.max (types.size(),1 );
     }
 
     @Override

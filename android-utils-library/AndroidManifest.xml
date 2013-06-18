@@ -3,4 +3,9 @@
 
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="16"/>
 
+    <application>
+        <service android:name="com.github.sgdesmet.android.utils.service.RestService" android:label="iwish-service"/>
+        <service android:name="com.github.sgdesmet.android.utils.service.image.loader.impl.ImageService" android:label="imageservice"/>
+    </application>
+
 </manifest>
