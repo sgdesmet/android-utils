@@ -80,7 +80,7 @@ public class ImageService extends IntentService {
         } else {
             try {
                 //see if we still need the imagefactory
-                if (ImageLoaderFactory.get().isUrlpending(uri.toString())){
+                if (ImageLoaderFactory.get().pending( uri.toString() )){
                     byte[] image = getImage(uri.toString());
                     if (image != null && image.length != 0){
                         bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread

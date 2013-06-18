@@ -2,6 +2,7 @@ package com.github.sgdesmet.androidutils.service.image.loader;
 
 import android.widget.ImageView;
 
+
 /**
  * TODO description
  * <p/>
@@ -11,12 +12,22 @@ import android.widget.ImageView;
  * @author: sgdesmet
  */
 public interface ImageLoader {
-    int KEEP_CURRENT = -1;
-    int NO_RESOURCE = -2;
 
+    int KEEP_CURRENT = -1;
+    int NO_RESOURCE  = -2;
+
+    /**
+     * Load image from url and set it on the indicated view.
+     *
+     * @param loadingResource drawable to show when loading
+     * @param missingResource drawable to set when given url returned an error
+     */
     void loadImage(String url, ImageView view, int loadingResource, int missingResource);
 
+    /**
+     * Load image and notify by callback if ready
+     */
     void loadImage(String url, ImageCallback callback);
 
-    boolean isUrlpending(String url);
+    boolean pending(String url);
 }
