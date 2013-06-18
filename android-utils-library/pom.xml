@@ -5,12 +5,12 @@
 
     <parent>
         <groupId>com.github.sgdesmet</groupId>
-        <artifactId>android-utils</artifactId>
+        <artifactId>android</artifactId>
         <version>0.5</version>
     </parent>
 
-	<groupId>com.github.sgdesmet.android-utils</groupId>
-	<artifactId>android-utils-library</artifactId>
+	<groupId>com.github.sgdesmet.android</groupId>
+	<artifactId>utils</artifactId>
 	<packaging>apklib</packaging>
 	<version>0.5</version>
 
