@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- NOTE NO activatedBackgroundIndicator SUPPORT pre 3.0 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+>
+
+    <ImageView android:id="@+id/utils.row.image"
+               android:layout_width="60dp"
+               android:layout_height="60dp"
+               android:layout_alignParentLeft="true"
+               android:layout_alignParentTop="true"
+               android:scaleType="centerCrop"
+               android:layout_margin="3dp"
+            />
+
+    <CheckBox android:id="@+id/utils.row.checkbox"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerVertical="true"
+              android:layout_alignParentRight="true"
+            />
+
+    <TextView android:id="@+id/utils.row.title"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/utils.row.image"
+              android:layout_toLeftOf="@id/utils.row.checkbox"
+              android:singleLine="true"
+              android:ellipsize="end"
+              android:scrollHorizontally="true"
+              android:textAppearance="@android:style/TextAppearance.Medium"
+              android:layout_marginLeft="3dp"
+              android:text="Text"
+              />
+
+    <TextView android:id="@+id/utils.row.status"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_toRightOf="@id/utils.row.image"
+              android:layout_toLeftOf="@id/utils.row.checkbox"
+              android:layout_below="@id/utils.row.title"
+              android:singleLine="true"
+              android:textStyle="italic"
+              android:ellipsize="end"
+              android:layout_marginLeft="3dp"
+              android:text="Description"
+            />
+
+
+</RelativeLayout>

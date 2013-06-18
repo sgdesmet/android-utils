@@ -39,6 +39,15 @@
 	</dependencies>
 
 	<build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -48,6 +57,10 @@
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
                 <extensions>true</extensions>
+                <configuration>
+                    <customPackage>com.github.sgdesmet.android.utils</customPackage>
+                </configuration>
+
             </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
