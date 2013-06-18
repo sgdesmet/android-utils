@@ -6,8 +6,7 @@ import android.widget.*;
 import com.github.sgdesmet.androidutils.list.items.ViewHolder;
 import com.github.sgdesmet.androidutils.service.image.loader.ImageLoader;
 import com.github.sgdesmet.androidutils.service.image.loader.ImageLoaderFactory;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -55,13 +54,13 @@ public class SimpleListAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
-        return items.size();
+        return getItems().size();
     }
 
     @Override
     public Object getItem(final int position) {
 
-        return items.get( position );
+        return getItems().get( position );
     }
 
     @Override
@@ -73,23 +72,24 @@ public class SimpleListAdapter extends BaseAdapter {
     @Override
     public boolean isEnabled(final int position) {
 
-        return !items.get( position ).enabled();
+        return getItems().get( position ).enabled();
     }
 
     @Override
     public int getItemViewType(final int position) {
 
-        ListItem ListItem = items.get( position );
-        if (!ListItem.enabled())
-            return super.getItemViewType( position );    //TODO implement
-        else
-            return AdapterView.ITEM_VIEW_TYPE_HEADER_OR_FOOTER;
+        ListItem listItem = getItems().get( position );
+        return listItem.viewType();
     }
 
     @Override
     public int getViewTypeCount() {
 
-        return 2;
+        Set<Integer> types = new HashSet<Integer>(  );
+        for (ListItem item : getItems()){
+            types.add( item.viewType() );
+        }
+        return types.size();
     }
 
     @Override
