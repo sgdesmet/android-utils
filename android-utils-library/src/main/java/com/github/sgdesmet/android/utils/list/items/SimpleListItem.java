@@ -104,7 +104,7 @@ public class SimpleListItem implements ListItem {
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             holder = new ViewHolder();
-            rowView = inflater.inflate( R.layout.row_text_image, null );
+            rowView = inflater.inflate( R.layout.simple_row_text_image, null );
             holder.imageView = (ImageView) rowView.findViewById( R.id.utils_row_image );
             holder.title = (TextView) rowView.findViewById( R.id.utils_row_text );
             holder.description = (TextView) rowView.findViewById( R.id.utils_row_description );
