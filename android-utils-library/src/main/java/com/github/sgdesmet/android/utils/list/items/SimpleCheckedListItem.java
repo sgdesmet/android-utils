@@ -139,6 +139,7 @@ public class SimpleCheckedListItem implements ListItem {
                         SimpleCheckedListItem.this.checked = isChecked;
                 }
             } );
+            holder.checkBox.setFocusable( false );
             rowView.setTag( holder );
         }
         return rowView;
