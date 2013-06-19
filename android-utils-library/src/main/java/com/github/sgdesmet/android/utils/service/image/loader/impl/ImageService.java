@@ -84,7 +84,8 @@ public class ImageService extends IntentService {
                     byte[] image = getImage(uri.toString());
                     if (image != null && image.length != 0){
                         bitmap = BitmapUtils.decodeImageMemoryEfficient(image); //also do decoding into a bitmap here, so we don't have to do it on the main thread
-                        getMemoryCache().put(uri.toString(), bitmap);
+                        if (bitmap != null)
+                            getMemoryCache().put(uri.toString(), bitmap);
                     }
                 }
             } catch (IOException e) {
@@ -114,6 +115,7 @@ public class ImageService extends IntentService {
             connection.setConnectTimeout( HttpResource.DEFAULT_TIMEOUT); //TODO may need to add a timer to forcibly terminate if necessary?
             connection.setReadTimeout( HttpResource.DEFAULT_TIMEOUT);
             //TODO cache-control?
+            //TODO check returned data
 
             is = connection.getInputStream();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
