@@ -17,7 +17,7 @@ import com.github.sgdesmet.android.utils.list.ListItem;
  */
 public class SimpleHeaderItem implements ListItem {
 
-    public static final int ITEM_VIEW_TYPE = 0;
+    public static final int ITEM_VIEW_TYPE = 1;
 
     CharSequence title;
     Context applicationContext;

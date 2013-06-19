@@ -19,7 +19,7 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
  */
 public class SimpleCheckedListItem extends SimpleListItem {
 
-    public static final int ITEM_VIEW_TYPE = 2;
+    public static final int ITEM_VIEW_TYPE = 3;
 
     boolean checked;
 

@@ -20,7 +20,7 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
  */
 public class SimpleListItem implements ListItem {
 
-    public static final int ITEM_VIEW_TYPE = 1;
+    public static final int ITEM_VIEW_TYPE = 2;
 
     String imageUrl;
     CharSequence title;

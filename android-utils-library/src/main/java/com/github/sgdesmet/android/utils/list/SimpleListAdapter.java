@@ -77,7 +77,7 @@ public class SimpleListAdapter extends BaseAdapter {
             if (item.viewType() > max)
                 max = item.viewType();
         }
-        return max;
+        return max + 1;
     }
 
     @Override
