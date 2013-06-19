@@ -120,7 +120,11 @@ public class SimpleListItem implements ListItem {
         ViewHolder holder;
         View rowView = convertView;
         if (rowView == null) {
-            LayoutInflater inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = null;
+            if (parent != null && parent.getContext() != null)
+                inflater = (LayoutInflater) parent.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            else
+                inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_text_image, null );
             holder.imageView = (ImageView) rowView.findViewById( R.id.utils_row_image );

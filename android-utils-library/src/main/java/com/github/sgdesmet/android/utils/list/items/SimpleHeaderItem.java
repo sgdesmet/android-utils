@@ -58,7 +58,11 @@ public class SimpleHeaderItem implements ListItem {
 
         View rowView = convertView;
         if (convertView == null ) {
-            LayoutInflater inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater;
+            if (parent != null && parent.getContext() != null)
+                inflater = (LayoutInflater) parent.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            else
+                inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             ViewHolder holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_header, null );
             holder.title = (TextView) rowView.findViewById( R.id.utils_row_header );
