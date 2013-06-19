@@ -17,78 +17,18 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
  *
  * @author: sgdesmet
  */
-public class SimpleCheckedListItem implements ListItem {
+public class SimpleCheckedListItem extends SimpleListItem {
 
-    String imageUrl;
-    String title;
-    String description;
     boolean checked;
 
-    Context applicationContext;
-
-    protected View.OnClickListener onClickListener;
     protected View.OnClickListener checkBoxListener;
 
     public SimpleCheckedListItem(final Context applicationContext, final String imageUrl, final String title, final String description, boolean checked,
                                  final View.OnClickListener onClickListener, final View.OnClickListener checkBoxListener) {
 
-        this.imageUrl = imageUrl;
-        this.title = title;
-        this.description = description;
+        super(applicationContext, imageUrl, title, description, onClickListener );
         this.checked = checked;
-        this.onClickListener = onClickListener;
-        this.applicationContext = applicationContext;
         this.checkBoxListener = checkBoxListener;
-    }
-
-    public Context getApplicationContext() {
-
-        return applicationContext;
-    }
-
-    public void setApplicationContext(final Context applicationContext) {
-
-        this.applicationContext = applicationContext;
-    }
-
-    public String getImageUrl() {
-
-        return imageUrl;
-    }
-
-    public void setImageUrl(final String imageUrl) {
-
-        this.imageUrl = imageUrl;
-    }
-
-    public String getTitle() {
-
-        return title;
-    }
-
-    public void setTitle(final String title) {
-
-        this.title = title;
-    }
-
-    public String getDescription() {
-
-        return description;
-    }
-
-    public void setDescription(final String description) {
-
-        this.description = description;
-    }
-
-    public View.OnClickListener getOnClickListener() {
-
-        return onClickListener;
-    }
-
-    public void setOnClickListener(final View.OnClickListener onClickListener) {
-
-        this.onClickListener = onClickListener;
     }
 
     public View.OnClickListener getCheckBoxListener() {
@@ -109,14 +49,6 @@ public class SimpleCheckedListItem implements ListItem {
     public void setChecked(final boolean checked) {
 
         this.checked = checked;
-    }
-
-    @Override
-    public void onClick() {
-
-        if (onClickListener != null) {
-            onClickListener.onClick( null );
-        }
     }
 
     @Override
@@ -177,12 +109,6 @@ public class SimpleCheckedListItem implements ListItem {
     }
 
     @Override
-    public boolean enabled() {
-
-        return true;
-    }
-
-    @Override
     public boolean equals(final Object o) {
 
         if (this == o) {
@@ -191,22 +117,16 @@ public class SimpleCheckedListItem implements ListItem {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (!super.equals( o )) {
+            return false;
+        }
 
         SimpleCheckedListItem that = (SimpleCheckedListItem) o;
 
-        if (applicationContext != null? !applicationContext.equals( that.applicationContext ): that.applicationContext != null) {
+        if (checked != that.checked) {
             return false;
         }
-        if (description != null? !description.equals( that.description ): that.description != null) {
-            return false;
-        }
-        if (imageUrl != null? !imageUrl.equals( that.imageUrl ): that.imageUrl != null) {
-            return false;
-        }
-        if (onClickListener != null? !onClickListener.equals( that.onClickListener ): that.onClickListener != null) {
-            return false;
-        }
-        if (title != null? !title.equals( that.title ): that.title != null) {
+        if (checkBoxListener != null? !checkBoxListener.equals( that.checkBoxListener ): that.checkBoxListener != null) {
             return false;
         }
 
@@ -216,11 +136,9 @@ public class SimpleCheckedListItem implements ListItem {
     @Override
     public int hashCode() {
 
-        int result = imageUrl != null? imageUrl.hashCode(): 0;
-        result = 31 * result + (title != null? title.hashCode(): 0);
-        result = 31 * result + (description != null? description.hashCode(): 0);
-        result = 31 * result + (applicationContext != null? applicationContext.hashCode(): 0);
-        result = 31 * result + (onClickListener != null? onClickListener.hashCode(): 0);
+        int result = super.hashCode();
+        result = 31 * result + (checked? 1: 0);
+        result = 31 * result + (checkBoxListener != null? checkBoxListener.hashCode(): 0);
         return result;
     }
 
