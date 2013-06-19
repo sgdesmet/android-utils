@@ -70,11 +70,14 @@ public class SimpleListAdapter extends BaseAdapter {
     @Override
     public int getViewTypeCount() {
 
-        Set<Integer> types = new HashSet<Integer>(  );
+        // getItemViewType must always be <= getViewTypeCount
+        // http://stackoverflow.com/questions/2596547/arrayindexoutofboundsexception-with-custom-android-adapter-for-multiple-views-in
+        int max = 1;
         for (ListItem item : getItems()){
-            types.add( item.viewType() );
+            if (item.viewType() > max)
+                max = item.viewType();
         }
-        return Math.max (types.size(),1 );
+        return max;
     }
 
     @Override

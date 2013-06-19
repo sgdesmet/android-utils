@@ -19,6 +19,8 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
  */
 public class SimpleCheckedListItem extends SimpleListItem {
 
+    public static final int ITEM_VIEW_TYPE = 2;
+
     boolean checked;
 
     protected View.OnClickListener checkBoxListener;
@@ -105,7 +107,7 @@ public class SimpleCheckedListItem extends SimpleListItem {
     @Override
     public int viewType() {
 
-        return R.id.utils_row_simple_checkbox;
+        return ITEM_VIEW_TYPE;
     }
 
     @Override

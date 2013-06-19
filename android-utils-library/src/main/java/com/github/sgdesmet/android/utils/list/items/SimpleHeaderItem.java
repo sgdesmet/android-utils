@@ -17,7 +17,9 @@ import com.github.sgdesmet.android.utils.list.ListItem;
  */
 public class SimpleHeaderItem implements ListItem {
 
-    CharSequence  title;
+    public static final int ITEM_VIEW_TYPE = 0;
+
+    CharSequence title;
     Context applicationContext;
 
     public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
@@ -76,7 +78,7 @@ public class SimpleHeaderItem implements ListItem {
     @Override
     public int viewType() {
 
-        return R.id.utils_row_header;
+        return ITEM_VIEW_TYPE;
     }
 
     @Override

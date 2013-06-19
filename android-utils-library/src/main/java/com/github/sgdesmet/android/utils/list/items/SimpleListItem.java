@@ -20,6 +20,8 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
  */
 public class SimpleListItem implements ListItem {
 
+    public static final int ITEM_VIEW_TYPE = 1;
+
     String imageUrl;
     CharSequence title;
     CharSequence description;
@@ -152,7 +154,7 @@ public class SimpleListItem implements ListItem {
     @Override
     public int viewType() {
 
-        return R.id.utils_row_simple;
+        return ITEM_VIEW_TYPE;
     }
 
     @Override
