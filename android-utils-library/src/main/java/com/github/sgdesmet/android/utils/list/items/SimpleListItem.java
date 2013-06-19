@@ -24,9 +24,15 @@ public class SimpleListItem implements ListItem {
     String title;
     String description;
 
+    boolean clickable = true;
+
     Context applicationContext;
 
     protected View.OnClickListener onClickListener;
+
+    protected SimpleListItem(){
+
+    }
 
     public SimpleListItem(final Context applicationContext, final String imageUrl, final String title, final String description,
                           final View.OnClickListener onClickListener) {
@@ -88,6 +94,16 @@ public class SimpleListItem implements ListItem {
         this.onClickListener = onClickListener;
     }
 
+    public boolean isClickable() {
+
+        return clickable;
+    }
+
+    public void setClickable(final boolean clickable) {
+
+        this.clickable = clickable;
+    }
+
     @Override
     public void onClick() {
 
@@ -142,7 +158,7 @@ public class SimpleListItem implements ListItem {
     @Override
     public boolean enabled() {
 
-        return true;
+        return clickable;
     }
 
     @Override
