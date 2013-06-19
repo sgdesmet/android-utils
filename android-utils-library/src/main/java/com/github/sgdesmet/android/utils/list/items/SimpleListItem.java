@@ -21,8 +21,8 @@ import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory
 public class SimpleListItem implements ListItem {
 
     String imageUrl;
-    String title;
-    String description;
+    CharSequence title;
+    CharSequence description;
 
     boolean clickable = true;
 
@@ -34,7 +34,7 @@ public class SimpleListItem implements ListItem {
 
     }
 
-    public SimpleListItem(final Context applicationContext, final String imageUrl, final String title, final String description,
+    public SimpleListItem(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
                           final View.OnClickListener onClickListener) {
 
         this.imageUrl = imageUrl;
@@ -64,17 +64,17 @@ public class SimpleListItem implements ListItem {
         this.imageUrl = imageUrl;
     }
 
-    public String getTitle() {
+    public CharSequence getTitle() {
 
         return title;
     }
 
-    public void setTitle(final String title) {
+    public void setTitle(final CharSequence title) {
 
         this.title = title;
     }
 
-    public String getDescription() {
+    public CharSequence getDescription() {
 
         return description;
     }
@@ -203,9 +203,17 @@ public class SimpleListItem implements ListItem {
         return result;
     }
 
-    public static ListItem item(final Context applicationContext, final String imageUrl, final String title, final String description,
+    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
                                       final View.OnClickListener onClickListener) {
 
         return new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+    }
+
+    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+                                final View.OnClickListener onClickListener, boolean clickable) {
+
+        SimpleListItem item = new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+        item.setClickable( clickable );
+        return item;
     }
 }

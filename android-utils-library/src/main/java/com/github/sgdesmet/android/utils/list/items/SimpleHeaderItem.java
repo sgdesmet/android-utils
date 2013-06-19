@@ -17,21 +17,21 @@ import com.github.sgdesmet.android.utils.list.ListItem;
  */
 public class SimpleHeaderItem implements ListItem {
 
-    String  title;
+    CharSequence  title;
     Context applicationContext;
 
-    public SimpleHeaderItem(final String title, final Context applicationContext) {
+    public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
 
         this.title = title;
         this.applicationContext = applicationContext;
     }
 
-    public String getTitle() {
+    public CharSequence getTitle() {
 
         return title;
     }
 
-    public void setTitle(final String title) {
+    public void setTitle(final CharSequence title) {
 
         this.title = title;
     }
@@ -110,7 +110,7 @@ public class SimpleHeaderItem implements ListItem {
         return title != null? title.hashCode(): 0;
     }
 
-    public static ListItem header(final Context applicationContext, final String title){
+    public static ListItem header(final Context applicationContext, final CharSequence title){
         return new SimpleHeaderItem( title, applicationContext );
     }
 }
