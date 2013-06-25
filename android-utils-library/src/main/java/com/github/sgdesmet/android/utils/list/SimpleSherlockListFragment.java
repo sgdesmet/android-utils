@@ -17,14 +17,9 @@ import java.util.Collections;
  */
 public class SimpleSherlockListFragment extends SherlockListFragment {
 
-    @Override
-    public void onCreate(final Bundle savedInstanceState) {
-
-        super.onCreate( savedInstanceState );
-        if (getListAdapter() == null)
-            setListAdapter( new SimpleListAdapter( Collections.<ListItem>emptyList() ) );
+    public void setSimpleListAdapter(SimpleListAdapter adapter){
+        setListAdapter( adapter );
     }
-
 
     public SimpleListAdapter getSimpleListAdapter(){
         if (getListAdapter() != null && getListAdapter() instanceof SimpleListAdapter)

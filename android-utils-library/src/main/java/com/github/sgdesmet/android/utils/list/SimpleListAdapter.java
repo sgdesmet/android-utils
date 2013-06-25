@@ -17,13 +17,23 @@ import java.util.*;
 public class SimpleListAdapter extends BaseAdapter {
 
     private List<ListItem> items;
+    private final List<Class<? extends ListItem>> viewTypes;
 
-    public SimpleListAdapter(final List<ListItem> items) {
+    /**
+     *
+     * @param viewTypes the view types used in this class. cannot be changed at runtime
+     * @param items
+     */
+    public SimpleListAdapter(final List<Class<? extends ListItem>> viewTypes, final List<ListItem> items) {
 
         if (items != null)
             this.items = items;
         else
             this.items = Collections.emptyList();
+        if (viewTypes == null || viewTypes.size() ==0 ){
+            throw new IllegalArgumentException("ViewTypes must contain at least one type");
+        }
+        this.viewTypes = viewTypes;
     }
 
     public List<ListItem> getItems() {
@@ -34,6 +44,11 @@ public class SimpleListAdapter extends BaseAdapter {
     public void setItems(final List<ListItem> items) {
 
         this.items = items;
+    }
+
+    public List<Class<? extends ListItem>> getViewTypes() {
+
+        return viewTypes;
     }
 
     @Override
@@ -64,20 +79,13 @@ public class SimpleListAdapter extends BaseAdapter {
     public int getItemViewType(final int position) {
 
         ListItem listItem = getItems().get( position );
-        return listItem.viewType();
+        return getViewTypes().indexOf( listItem.getClass() );
     }
 
     @Override
     public int getViewTypeCount() {
 
-        // getItemViewType must always be <= getViewTypeCount
-        // http://stackoverflow.com/questions/2596547/arrayindexoutofboundsexception-with-custom-android-adapter-for-multiple-views-in
-        int max = 1;
-        for (ListItem item : getItems()){
-            if (item.viewType() > max)
-                max = item.viewType();
-        }
-        return max + 1;
+        return getViewTypes().size();
     }
 
     @Override
