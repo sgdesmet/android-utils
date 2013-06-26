@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+
 
 /**
  * TODO description
@@ -298,7 +300,7 @@ public class DefaultDialogs implements IDefaultDialogs {
 
     }
 
-    protected static class OneButtonDialog extends BaseDialogFragment{
+    public static class OneButtonDialog extends BaseDialogFragment{
 
         private String title;
         private String message;
@@ -348,9 +350,18 @@ public class DefaultDialogs implements IDefaultDialogs {
             }
             return super.onCreateDialog(savedInstanceState);
         }
+
+        @Override
+        public void onDestroyView() {
+
+            super.onDestroyView();
+            if ( customView != null && customView.getParent() != null){
+                ((ViewGroup)customView.getParent()).removeView( customView );
+            }
+        }
     }
 
-    protected static class TwoButtonDialog extends BaseDialogFragment{
+    public static class TwoButtonDialog extends BaseDialogFragment{
 
         private String title;
         private String message;
@@ -402,12 +413,23 @@ public class DefaultDialogs implements IDefaultDialogs {
                         .setPositiveButton(yesButton, yesListener)
                         .setNegativeButton(noButton, noListener);
 
-                if (customView != null)
+                if (customView != null){
                     builder.setView(customView);
+                }
+
 
                 return builder.create();
             }
             return super.onCreateDialog(savedInstanceState);
+        }
+
+        @Override
+        public void onDestroyView() {
+
+            super.onDestroyView();
+            if ( customView != null && customView.getParent() != null){
+                ((ViewGroup)customView.getParent()).removeView( customView );
+            }
         }
     }
 
