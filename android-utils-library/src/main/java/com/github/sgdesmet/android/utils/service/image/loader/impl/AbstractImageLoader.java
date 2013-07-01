@@ -50,12 +50,12 @@ public abstract class AbstractImageLoader implements ImageLoader {
             throw new RuntimeException( "Refusing to get image " + url + ": this method *MUST* be called from the main thread!" );
         }
         if (view == null) {
-            Log.e( TAG, "View was null" );
+            Log.w( TAG, "View was null" );
             return;
         }
 
         if (url == null || url.trim().equals( "" )) {
-            Log.e( TAG, "URL was null" );
+            Log.d( TAG, "URL was null" );
             urlForView.remove( view );
             if (missingResource > 0) {
                 view.setImageResource( missingResource );
