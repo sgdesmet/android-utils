@@ -1,10 +1,8 @@
 package com.github.sgdesmet.android.utils.list;
 
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListFragment;
-import java.util.Collections;
 
 
 /**

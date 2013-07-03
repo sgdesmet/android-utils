@@ -1,9 +1,7 @@
 package com.github.sgdesmet.android.utils.dialogs;
 
 import android.R;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 
 /**
@@ -434,7 +431,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
     }
 
-    protected static class BaseDialogFragment extends SherlockDialogFragment {
+    protected static class BaseDialogFragment extends DialogFragment {
 
         @Override
         public void show(FragmentManager manager, String tag) {

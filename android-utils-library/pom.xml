@@ -34,7 +34,9 @@
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
+            <artifactId>actionbarsherlock</artifactId>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 	</dependencies>
 
