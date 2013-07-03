@@ -109,12 +109,6 @@ public class SimpleCheckedListItem extends SimpleListItem {
     }
 
     @Override
-    public int viewType() {
-
-        return ITEM_VIEW_TYPE;
-    }
-
-    @Override
     public boolean equals(final Object o) {
 
         if (this == o) {

@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import com.github.sgdesmet.android.utils.list.ListItem;
+import java.io.Serializable;
 
 
 /**
@@ -15,6 +16,8 @@ import com.github.sgdesmet.android.utils.list.ListItem;
  * @author: sgdesmet
  */
 public abstract class ViewWrapperItem implements ListItem {
+
+    Serializable tag;
 
     @Override
     public void onClick() {
@@ -34,10 +37,15 @@ public abstract class ViewWrapperItem implements ListItem {
         //noop
     }
 
-    @Override
-    public int viewType() {
+    public void setTag(final Serializable tag) {
 
-        return AdapterView.ITEM_VIEW_TYPE_IGNORE;
+        this.tag = tag;
+    }
+
+    @Override
+    public Serializable getTag() {
+
+        return tag;
     }
 
     @Override

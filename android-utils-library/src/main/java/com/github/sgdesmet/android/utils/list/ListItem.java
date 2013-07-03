@@ -2,6 +2,7 @@ package com.github.sgdesmet.android.utils.list;
 
 import android.view.View;
 import android.view.ViewGroup;
+import java.io.Serializable;
 
 
 /**
@@ -20,11 +21,7 @@ public interface ListItem {
 
     void configure(View inflatedView);
 
-    /**
-     * See {@code getItemViewType()} in {@code android.widget.BaseAdapter}.
-     * @return
-     */
-    int viewType();
-
     boolean enabled();
+
+    Serializable getTag();
 }

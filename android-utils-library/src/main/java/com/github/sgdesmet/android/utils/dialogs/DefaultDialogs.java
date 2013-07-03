@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.actionbarsherlock.app.SherlockDialogFragment;
 
 
 /**
@@ -433,7 +434,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
     }
 
-    protected static class BaseDialogFragment extends DialogFragment {
+    protected static class BaseDialogFragment extends SherlockDialogFragment {
 
         @Override
         public void show(FragmentManager manager, String tag) {

@@ -5,6 +5,7 @@ import android.view.*;
 import android.widget.TextView;
 import com.github.sgdesmet.android.utils.R;
 import com.github.sgdesmet.android.utils.list.ListItem;
+import java.io.Serializable;
 
 
 /**
@@ -20,7 +21,8 @@ public class SimpleHeaderItem implements ListItem {
     public static final int ITEM_VIEW_TYPE = 1;
 
     CharSequence title;
-    Context applicationContext;
+    Context      applicationContext;
+    private Serializable tag;
 
     public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
 
@@ -79,10 +81,15 @@ public class SimpleHeaderItem implements ListItem {
         }
     }
 
-    @Override
-    public int viewType() {
+    public void setTag(final Serializable tag) {
 
-        return ITEM_VIEW_TYPE;
+        this.tag = tag;
+    }
+
+    @Override
+    public Serializable getTag() {
+
+        return tag;
     }
 
     @Override

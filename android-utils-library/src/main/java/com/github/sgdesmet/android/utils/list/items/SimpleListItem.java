@@ -8,6 +8,7 @@ import com.github.sgdesmet.android.utils.R;
 import com.github.sgdesmet.android.utils.list.ListItem;
 import com.github.sgdesmet.android.utils.service.image.loader.ImageLoader;
 import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory;
+import java.io.Serializable;
 
 
 /**
@@ -22,7 +23,7 @@ public class SimpleListItem implements ListItem {
 
     public static final int ITEM_VIEW_TYPE = 2;
 
-    String imageUrl;
+    String       imageUrl;
     CharSequence title;
     CharSequence description;
 
@@ -31,8 +32,9 @@ public class SimpleListItem implements ListItem {
     Context applicationContext;
 
     protected View.OnClickListener onClickListener;
+    private   Serializable         tag;
 
-    protected SimpleListItem(){
+    protected SimpleListItem() {
 
     }
 
@@ -44,6 +46,18 @@ public class SimpleListItem implements ListItem {
         this.description = description;
         this.onClickListener = onClickListener;
         this.applicationContext = applicationContext;
+    }
+
+    public SimpleListItem(final String imageUrl, final CharSequence title, final CharSequence description, final boolean clickable,
+                          final Context applicationContext, final View.OnClickListener onClickListener, final Serializable tag) {
+
+        this.imageUrl = imageUrl;
+        this.title = title;
+        this.description = description;
+        this.clickable = clickable;
+        this.applicationContext = applicationContext;
+        this.onClickListener = onClickListener;
+        this.tag = tag;
     }
 
     public Context getApplicationContext() {
@@ -155,10 +169,15 @@ public class SimpleListItem implements ListItem {
         }
     }
 
-    @Override
-    public int viewType() {
+    public void setTag(final Serializable tag) {
 
-        return ITEM_VIEW_TYPE;
+        this.tag = tag;
+    }
+
+    @Override
+    public Serializable getTag() {
+
+        return tag;
     }
 
     @Override
@@ -220,6 +239,15 @@ public class SimpleListItem implements ListItem {
 
         SimpleListItem item = new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
         item.setClickable( clickable );
+        return item;
+    }
+
+    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+                                final View.OnClickListener onClickListener, boolean clickable, Serializable tag) {
+
+        SimpleListItem item = new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+        item.setClickable( clickable );
+        item.setTag( tag );
         return item;
     }
 }
