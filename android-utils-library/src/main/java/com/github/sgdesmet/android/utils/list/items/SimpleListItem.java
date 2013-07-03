@@ -48,8 +48,8 @@ public class SimpleListItem implements ListItem {
         this.applicationContext = applicationContext;
     }
 
-    public SimpleListItem(final String imageUrl, final CharSequence title, final CharSequence description, final boolean clickable,
-                          final Context applicationContext, final View.OnClickListener onClickListener, final Serializable tag) {
+    public SimpleListItem(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+                          final View.OnClickListener onClickListener, final boolean clickable, final Serializable tag) {
 
         this.imageUrl = imageUrl;
         this.title = title;
