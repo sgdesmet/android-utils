@@ -9,7 +9,7 @@ import javax.net.ssl.*;
 
 
 /**
- * TODO description
+ * SSL related utils
  * <p/>
  * Date: 05/07/13
  * Time: 15:03
@@ -21,7 +21,7 @@ public class SSLUtils {
     private static final String TAG = SSLUtils.class.getSimpleName();
 
     /**
-     * Set up a system-wide SSLSocketFactory with a custom trust store.
+     * Set up a default SSLSocketFactory for {@code javax.net.ssl.HttpsURLConnection} with a custom trust store.
      * If trustStoreName is null or blank, no SSLSocketFactory will be set.
      *
      * @param trustStoreName name of the trust store file (BKS format) residing in the "raw" resources directory. Name must NOT contain the
