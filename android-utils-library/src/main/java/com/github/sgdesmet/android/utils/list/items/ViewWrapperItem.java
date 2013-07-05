@@ -27,10 +27,10 @@ public abstract class ViewWrapperItem implements ListItem {
     @Override
     public View inflate(final View convertView, final ViewGroup parent) {
 
-        return getView(parent);
+        return getView(convertView, parent);
     }
 
-    public abstract View getView(final ViewGroup parent);
+    public abstract View getView(final View convertView, final ViewGroup parent);
 
     @Override
     public void configure(final View inflatedView) {
