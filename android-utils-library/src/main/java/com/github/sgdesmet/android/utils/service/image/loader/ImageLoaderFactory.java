@@ -1,8 +1,8 @@
 package com.github.sgdesmet.android.utils.service.image.loader;
 
 import android.content.Context;
-import com.github.sgdesmet.android.utils.service.image.loader.impl.AbstractImageLoader;
-import com.github.sgdesmet.android.utils.service.image.loader.impl.IntentServiceImageLoader;
+import com.github.sgdesmet.android.utils.service.image.loader.impl.*;
+
 
 /**
  * TODO description
@@ -17,17 +17,23 @@ public class ImageLoaderFactory {
     private static final String TAG = ImageLoaderFactory.class.getSimpleName();
 
     private static Context context;
+    private static int     numThreads;
+    private static int     cacheSize;
 
-    public static void init(Context applicationContext){
+    public static void init(final Context applicationContext, final int numThreads, final int cacheSize) {
+
         context = applicationContext;
+        ImageLoaderFactory.numThreads = numThreads;
+        ImageLoaderFactory.cacheSize = cacheSize;
     }
 
-    private static class SingletonHolder{
-        public static final AbstractImageLoader INSTANCE= new IntentServiceImageLoader(context);
+    private static class SingletonHolder {
+
+        public static final ImageLoader INSTANCE = new ImageLoaderImpl( context, numThreads, cacheSize );
     }
 
-    public static synchronized AbstractImageLoader get() {
+    public static synchronized ImageLoader get() {
+
         return SingletonHolder.INSTANCE;
     }
-
 }
