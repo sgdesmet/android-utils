@@ -215,10 +215,10 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                         if (bitmap != null) {
                             view.setImageBitmap( bitmap );
                         } else if (missingResourceForView.containsKey( view )) {
-                            Integer resource = missingResourceForView.get( view );
-                            if (resource != null && resource > 0) {
+                            int resource = missingResourceForView.get( view ) != null? missingResourceForView.get( view ): KEEP_CURRENT;
+                            if (resource > 0) {
                                 view.setImageResource( missingResourceForView.get( view ) );
-                            } else if (resource != null && resource == NO_RESOURCE) {
+                            } else if (resource == NO_RESOURCE) {
                                 view.setImageBitmap( null );
                             }
                         }
@@ -249,12 +249,12 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                 callback.failure( url );
     }
 
-    private static final Handler uiHandler =  new Handler( Looper.getMainLooper() );
+    private static final Handler uiHandler = new Handler( Looper.getMainLooper() );
+
+
     private class ImageRunner implements Runnable {
 
         String imageUrl;
-
-
 
         private ImageRunner(final String imageUrl) {
 
@@ -285,10 +285,10 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                 uiHandler.post( new Runnable() {
                     @Override
                     public void run() {
+
                         error( imageUrl );
                     }
                 } );
-
             }
         }
 
