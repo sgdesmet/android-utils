@@ -29,5 +29,4 @@ public interface ImageLoader {
      */
     void loadImage(String url, ImageCallback callback);
 
-    boolean pending(String url);
 }
