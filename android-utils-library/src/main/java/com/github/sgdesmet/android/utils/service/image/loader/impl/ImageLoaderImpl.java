@@ -51,7 +51,7 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                 @Override
                 protected int sizeOf(String key, Bitmap bitmap) {
 
-                    return bitmap.getRowBytes() * bitmap.getHeight();
+                    return Math.max(( bitmap.getRowBytes() * bitmap.getHeight() ) / 1024, 1); //in kB, an item is at least 1kb
                 }
             };
         }

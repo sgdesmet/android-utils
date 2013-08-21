@@ -20,6 +20,12 @@ public class ImageLoaderFactory {
     private static int     numThreads;
     private static int     cacheSize;
 
+    /**
+     *
+     * @param applicationContext
+     * @param numThreads number of concurrent threads used to download images
+     * @param cacheSize memory cache size in kilobytes. If <= 0, no memory cache is used
+     */
     public static void init(final Context applicationContext, final int numThreads, final int cacheSize) {
 
         context = applicationContext;
