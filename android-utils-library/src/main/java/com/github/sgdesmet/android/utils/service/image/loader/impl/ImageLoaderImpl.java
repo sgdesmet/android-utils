@@ -44,7 +44,8 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
         if (executorService == null)
             executorService = Executors.newFixedThreadPool( numThreads );
 
-        applicationContext.registerComponentCallbacks( this );
+        if (Build.VERSION.SDK_INT >= 14)
+            applicationContext.registerComponentCallbacks( this );
 
         if (cacheSize >= 0) {
             memoryCache = new LruCache<String, Bitmap>( cacheSize ) {
