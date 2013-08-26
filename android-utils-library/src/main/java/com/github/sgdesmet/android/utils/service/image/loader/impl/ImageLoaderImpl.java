@@ -181,7 +181,7 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
 
             setResourceImage( loadingResource );
 
-            if (getView() != null && urlForView.get( getView() ).equals( imageUrl )) {
+            if (getView() != null && imageUrl.equals( urlForView.get( getView() ) )) {
                 try {
                     final Bitmap bitmap = getBitmap( imageUrl );
                     setImage( bitmap );
@@ -201,7 +201,7 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                     if (bitmap != null) {
                         // if the ImageView still exists, and it still needs this image, set the image
                         ImageView imageView = getView();
-                        if (imageView != null && urlForView.get( imageView ).equals( imageUrl )) {
+                        if (imageView != null && imageUrl.equals( urlForView.get( imageView ) )) {
                             imageView.setImageBitmap( bitmap );
                         }
                     } else {
