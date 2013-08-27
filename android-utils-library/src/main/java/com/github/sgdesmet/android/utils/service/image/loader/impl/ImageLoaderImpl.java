@@ -76,6 +76,13 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
         }
 
         urlForView.put( view, url );
+
+        if (loadingResource == NO_RESOURCE)
+            view.setImageBitmap( null );
+        else if (loadingResource > 0){
+            view.setImageResource( loadingResource );
+        }
+
         executorService.execute( new ImageViewRunner( url, loadingResource, missingResource, view ) );
     }
 
@@ -179,8 +186,6 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
                 setResourceImage( missingResource );
                 return;
             }
-
-            setResourceImage( loadingResource );
 
             if (getView() != null && imageUrl.equals( urlForView.get( getView() ) )) {
                 try {
