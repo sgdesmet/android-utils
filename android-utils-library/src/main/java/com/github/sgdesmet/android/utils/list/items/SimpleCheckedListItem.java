@@ -25,12 +25,28 @@ public class SimpleCheckedListItem extends SimpleListItem {
 
     protected View.OnClickListener checkBoxListener;
 
+    protected CompoundButton.OnCheckedChangeListener checkedChangeListener;
+
     public SimpleCheckedListItem(final Context applicationContext, final String imageUrl, final String title, final String description, boolean checked,
                                  final View.OnClickListener onClickListener, final View.OnClickListener checkBoxListener) {
 
         super(applicationContext, imageUrl, title, description, onClickListener );
         this.checked = checked;
         this.checkBoxListener = checkBoxListener;
+    }
+
+    public CompoundButton.OnCheckedChangeListener getCheckedChangeListener() {
+
+        if (checkedChangeListener == null){
+            checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
+                    if (SimpleCheckedListItem.this.checked != isChecked)
+                        SimpleCheckedListItem.this.checked = isChecked;
+                }
+            };
+        }
+        return checkedChangeListener;
     }
 
     public View.OnClickListener getCheckBoxListener() {
@@ -70,13 +86,6 @@ public class SimpleCheckedListItem extends SimpleListItem {
             holder.title = (TextView) rowView.findViewById( R.id.utils_row_text );
             holder.description = (TextView) rowView.findViewById( R.id.utils_row_description );
             holder.checkBox = (CheckBox) rowView.findViewById( R.id.utils_row_checkbox );
-            holder.checkBox.setOnCheckedChangeListener( new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked) {
-                    if (SimpleCheckedListItem.this.checked != isChecked)
-                        SimpleCheckedListItem.this.checked = isChecked;
-                }
-            } );
             holder.checkBox.setFocusable( false );
             rowView.setTag( holder );
         }
@@ -88,6 +97,9 @@ public class SimpleCheckedListItem extends SimpleListItem {
 
         if (inflatedView != null) {
             ViewHolder holder = (ViewHolder) inflatedView.getTag();
+
+            holder.checkBox.setOnCheckedChangeListener( getCheckedChangeListener() );
+
             if (!this.equals( holder.content )) {
                 if (imageUrl != null)
                     ImageLoaderFactory.get()
