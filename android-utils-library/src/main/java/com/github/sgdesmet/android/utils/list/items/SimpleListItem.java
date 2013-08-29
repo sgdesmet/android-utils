@@ -157,7 +157,7 @@ public class SimpleListItem implements ListItem {
             if (!this.equals( holder.content )) {
                 if (imageUrl != null)
                     ImageLoaderFactory.get()
-                                      .loadImage( imageUrl, holder.imageView, ImageLoader.KEEP_CURRENT, ImageLoader.NO_RESOURCE );
+                                      .loadImage( imageUrl, holder.imageView, ImageLoader.NO_RESOURCE, ImageLoader.NO_RESOURCE );
                 else
                     holder.imageView.setVisibility( View.GONE );
                 if (title != null)
