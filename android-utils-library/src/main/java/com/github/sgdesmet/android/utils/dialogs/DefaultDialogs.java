@@ -34,7 +34,6 @@ public class DefaultDialogs implements IDefaultDialogs {
         public static final DefaultDialogs INSTANCE= new DefaultDialogs();
     }
 
-    //TODO different implementations based on sherlock/support/normal
     public static DefaultDialogs getInstance(){
 
         return SingletonHolder.INSTANCE;
@@ -52,7 +51,7 @@ public class DefaultDialogs implements IDefaultDialogs {
     public  void showProgressDialog(int resource, boolean cancelable, FragmentManager fm) {
         dismiss();
         if (dialogFragment == null && fm != null ){
-            dialogFragment = new ProgressDialogFragment(resource, cancelable);
+            dialogFragment = ProgressDialogFragment.newInstance(resource, cancelable);
             dialogFragment.show(fm, "progress_dialog");
         }
     }
@@ -77,7 +76,7 @@ public class DefaultDialogs implements IDefaultDialogs {
 
         dismiss();
         if (dialogFragment == null && fm != null ){
-            dialogFragment = new AlertDialogFragment(message, terminateApp);
+            dialogFragment = AlertDialogFragment.newInstance(message, terminateApp);
             dialogFragment.show(fm, "fatal_error_dialog");
         }
     }
@@ -190,36 +189,44 @@ public class DefaultDialogs implements IDefaultDialogs {
      */
     public static class AlertDialogFragment extends BaseDialogFragment {
 
-        private int messageResource;
+        private static final String TERMINATE = "terminate";
+        private static final String MESSAGE = "message";
 
-        private boolean terminateApp;
+        @Deprecated
+        public AlertDialogFragment() {
 
-        public AlertDialogFragment(int message) {
-            this.messageResource = message;
-            terminateApp = false;
         }
 
-        public AlertDialogFragment(int message, boolean terminateApp) {
-            this.messageResource = message;
-            this.terminateApp = terminateApp;
+        public static AlertDialogFragment newInstance(final int messageResource, final boolean terminateApp) {
+
+            AlertDialogFragment fragment = new AlertDialogFragment();
+            Bundle arguments = new Bundle();
+            arguments.putInt( MESSAGE, messageResource );
+            arguments.putBoolean( TERMINATE, terminateApp );
+            fragment.setArguments( arguments );
+            return fragment;
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            setRetainInstance(true);
+            setRetainInstance( true );
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setCancelable(true).setMessage(messageResource);
-            builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+            final int messageResource = getArguments().getInt( MESSAGE );
+            final boolean terminateApp = getArguments().getBoolean( TERMINATE );
+
+            AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+            builder.setCancelable( true ).setMessage( messageResource );
+            builder.setNeutralButton( R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+
                     dismiss();
                     if (terminateApp && getActivity() != null)
                         getActivity().finish();
                 }
-            });
-            setCancelable(true);
+            } );
+            setCancelable( true );
             return builder.create();
         }
 
@@ -228,11 +235,11 @@ public class DefaultDialogs implements IDefaultDialogs {
             // workaround for issue http://code.google.com/p/android/issues/detail?id=17423 (dialogfragment gets dismissed
             // on orientation change)
             if (getDialog() != null && getRetainInstance())
-                getDialog().setDismissMessage(null);
+                getDialog().setDismissMessage( null );
             super.onDestroyView();
         }
-
     }
+
 
     /**
      * Shows a loading message
@@ -244,46 +251,34 @@ public class DefaultDialogs implements IDefaultDialogs {
      */
     public static class ProgressDialogFragment extends BaseDialogFragment {
 
-        private static final String TITLE = "title";
+        private static final String TITLE      = "title";
         private static final String CANCELABLE = "cancelable";
-        private int titleResource;
-        private boolean cancelable;
 
+        @Deprecated
         public ProgressDialogFragment() {
-            titleResource = -1;
-            cancelable = true;
+
         }
 
-        public ProgressDialogFragment(int title, boolean cancelable) {
-            this.titleResource = title;
-            this.cancelable = cancelable;
-        }
+        public static ProgressDialogFragment newInstance(final int messageResource, final boolean terminateApp) {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
-            if (savedInstanceState != null){
-                titleResource = savedInstanceState.getInt(TITLE);
-                cancelable = savedInstanceState.getBoolean(CANCELABLE);
-            }
-        }
-
-        @Override
-        public void onSaveInstanceState(Bundle outState) {
-            super.onSaveInstanceState(outState);    //TODO implement
-
-            outState.putInt(TITLE, titleResource);
-            outState.putBoolean(CANCELABLE, cancelable);
+            ProgressDialogFragment fragment = new ProgressDialogFragment();
+            Bundle arguments = new Bundle();
+            arguments.putInt( TITLE, messageResource );
+            arguments.putBoolean( CANCELABLE, terminateApp );
+            fragment.setArguments( arguments );
+            return fragment;
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            ProgressDialog dialog = new ProgressDialog(getActivity());
-            dialog.setMessage(getString(titleResource, true));
-            dialog.setIndeterminate(true);
-            dialog.setCancelable(cancelable);
-            setCancelable(cancelable);
+
+            int titleResource = getArguments().getInt( TITLE );
+            boolean cancelable = getArguments().getBoolean( CANCELABLE );
+            ProgressDialog dialog = new ProgressDialog( getActivity() );
+            dialog.setMessage( getString( titleResource, true ) );
+            dialog.setIndeterminate( true );
+            dialog.setCancelable( cancelable );
+            setCancelable( cancelable );
             return dialog;
         }
 
@@ -292,25 +287,28 @@ public class DefaultDialogs implements IDefaultDialogs {
             // workaround for issue http://code.google.com/p/android/issues/detail?id=17423 (dialogfragment gets dismissed
             // on orientation change)
             if (getDialog() != null && getRetainInstance())
-                getDialog().setDismissMessage(null);
+                getDialog().setDismissMessage( null );
             super.onDestroyView();
         }
-
     }
 
-    public static class OneButtonDialog extends BaseDialogFragment{
 
-        private String title;
-        private String message;
-        private String neutralButton;
+    public static class OneButtonDialog extends BaseDialogFragment {
+
+        private String                          title;
+        private String                          message;
+        private String                          neutralButton;
         private DialogInterface.OnClickListener neutralListener;
-        private View customView;
+        private View                            customView;
         private boolean cancelable = false;
 
+        @Deprecated
         public OneButtonDialog() {
+
         }
 
         public OneButtonDialog(String title, String message, String neutralButton, DialogInterface.OnClickListener neutralListener) {
+
             this.title = title;
             this.message = message;
             this.neutralButton = neutralButton;
@@ -318,6 +316,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         }
 
         public OneButtonDialog(String title, View customView, String neutralButton, DialogInterface.OnClickListener neutralListener) {
+
             this.title = title;
             this.customView = customView;
             this.neutralButton = neutralButton;
@@ -326,55 +325,59 @@ public class DefaultDialogs implements IDefaultDialogs {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
+
+            super.onCreate( savedInstanceState );
+            setRetainInstance( true );
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            if (neutralListener != null){
-                setCancelable(cancelable);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setCancelable(cancelable)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setNeutralButton(neutralButton, neutralListener);
+            if (neutralListener != null) {
+                setCancelable( cancelable );
+                AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+                builder.setCancelable( cancelable )
+                       .setTitle( title )
+                       .setMessage( message )
+                       .setNeutralButton( neutralButton, neutralListener );
 
                 if (customView != null)
-                    builder.setView(customView);
+                    builder.setView( customView );
 
                 return builder.create();
             }
-            return super.onCreateDialog(savedInstanceState);
+            return super.onCreateDialog( savedInstanceState );
         }
 
         @Override
         public void onDestroyView() {
 
             super.onDestroyView();
-            if ( customView != null && customView.getParent() != null){
-                ((ViewGroup)customView.getParent()).removeView( customView );
+            if (customView != null && customView.getParent() != null) {
+                ((ViewGroup) customView.getParent()).removeView( customView );
             }
         }
     }
 
-    public static class TwoButtonDialog extends BaseDialogFragment{
 
-        private String title;
-        private String message;
-        private String yesButton;
+    public static class TwoButtonDialog extends BaseDialogFragment {
+
+        private String                          title;
+        private String                          message;
+        private String                          yesButton;
         private DialogInterface.OnClickListener yesListener;
-        private String noButton;
+        private String                          noButton;
         private DialogInterface.OnClickListener noListener;
-        private View customView;
+        private View                            customView;
         private boolean cancelable = false;
 
         public TwoButtonDialog() {
+
         }
 
-        public TwoButtonDialog(String title, String message, String yesButton, DialogInterface.OnClickListener yesListener,
-                               String noButton, DialogInterface.OnClickListener noListener) {
+        public TwoButtonDialog(String title, String message, String yesButton, DialogInterface.OnClickListener yesListener, String noButton,
+                               DialogInterface.OnClickListener noListener) {
+
             this.title = title;
             this.message = message;
             this.yesButton = yesButton;
@@ -385,6 +388,7 @@ public class DefaultDialogs implements IDefaultDialogs {
 
         public TwoButtonDialog(String title, View customView, String yesButton, DialogInterface.OnClickListener yesListener,
                                String noButton, DialogInterface.OnClickListener noListener) {
+
             this.title = title;
             this.customView = customView;
             this.yesButton = yesButton;
@@ -432,6 +436,10 @@ public class DefaultDialogs implements IDefaultDialogs {
     }
 
     protected static class BaseDialogFragment extends DialogFragment {
+
+        public BaseDialogFragment() {
+
+        }
 
         @Override
         public void show(FragmentManager manager, String tag) {
