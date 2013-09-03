@@ -3,6 +3,8 @@ package com.github.sgdesmet.android.utils.dialogs;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import java.io.Serializable;
+
 
 /**
  * TODO description
@@ -45,13 +47,19 @@ public interface IDefaultDialogs {
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm);
 
-    void showCustomOneButtonDialog(int titleResource, View contentView,
+    void showCustomOneButtonDialog(int titleResource, ViewProvider contentView,
                                    int yesResourceText,
                                    DialogInterface.OnClickListener yesListener,
                                    FragmentManager fm);
 
-    void showCustomTwoButtonDialog(int titleResource, View contentView,
+    void showCustomTwoButtonDialog(int titleResource, ViewProvider contentView,
                                    int yesResourceText, int noResourceText,
                                    DialogInterface.OnClickListener yesListener, DialogInterface.OnClickListener noListener,
                                    FragmentManager fm);
+
+    public interface ViewProvider extends Serializable {
+
+        View getView();
+    }
+
 }

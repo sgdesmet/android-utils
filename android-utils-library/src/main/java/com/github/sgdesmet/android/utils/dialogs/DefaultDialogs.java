@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import java.io.Serializable;
 
 
 /**
@@ -24,159 +25,162 @@ import android.view.ViewGroup;
 public class DefaultDialogs implements IDefaultDialogs {
 
     private static final String YESNO = "yesno";
-    private static final String OKAY = "okay";
+    private static final String OKAY  = "okay";
     BaseDialogFragment dialogFragment;
-    Context applicationContext;
+    Context            applicationContext;
 
     private static final String TAG = DefaultDialogs.class.getSimpleName();
 
-    private static class SingletonHolder{
-        public static final DefaultDialogs INSTANCE= new DefaultDialogs();
+
+    private static class SingletonHolder {
+
+        public static final DefaultDialogs INSTANCE = new DefaultDialogs();
     }
 
-    public static DefaultDialogs getInstance(){
+    public static DefaultDialogs getInstance() {
 
         return SingletonHolder.INSTANCE;
     }
 
-    protected DefaultDialogs(){
+    protected DefaultDialogs() {
 
     }
 
-    public static void init(Context context){
+    public static void init(Context context) {
+
         getInstance().applicationContext = context;
     }
 
     @Override
-    public  void showProgressDialog(int resource, boolean cancelable, FragmentManager fm) {
+    public void showProgressDialog(int resource, boolean cancelable, FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = ProgressDialogFragment.newInstance(resource, cancelable);
-            dialogFragment.show(fm, "progress_dialog");
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = ProgressDialogFragment.newInstance( resource, cancelable );
+            dialogFragment.show( fm, "progress_dialog" );
         }
     }
 
     @Override
-    public  void showProgressDialog(int resource, FragmentManager fm) {
-        showProgressDialog(resource, false, fm);
+    public void showProgressDialog(int resource, FragmentManager fm) {
+
+        showProgressDialog( resource, false, fm );
     }
 
     @Override
     public void showErrorDialog(int message, FragmentManager fm) {
-        showErrorDialog(message, fm, false);
+
+        showErrorDialog( message, fm, false );
     }
 
     @Override
     public void showTerminatingErrorDialog(int message, FragmentManager fm) {
-        showErrorDialog(message, fm, true);
+
+        showErrorDialog( message, fm, true );
     }
 
     @Override
     public void showErrorDialog(int message, FragmentManager fm, boolean terminateApp) {
 
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = AlertDialogFragment.newInstance(message, terminateApp);
-            dialogFragment.show(fm, "fatal_error_dialog");
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = AlertDialogFragment.newInstance( message, terminateApp );
+            dialogFragment.show( fm, "fatal_error_dialog" );
         }
     }
 
-
     @Override
-    public void dismiss(){
-        if (dialogFragment != null){
+    public void dismiss() {
+
+        if (dialogFragment != null) {
             try {
                 dialogFragment.dismiss();
-            }catch (Exception ignored){
+            }
+            catch (Exception ignored) {
                 //catch can't commit after onsaveinstance exceptions. Bit of a hack but oh well
-                Log.e(TAG, "Error while attempting to dismiss dialog: " + ignored);
-            } finally {
+                Log.e( TAG, "Error while attempting to dismiss dialog: " + ignored );
+            }
+            finally {
                 dialogFragment = null;
             }
         }
     }
 
     @Override
-    public void showOneButtonDialog(final int titleResource, final int messageResource,
-                                    final int buttonResourceText,
-                                    final DialogInterface.OnClickListener buttonListener,
-                                    FragmentManager fm) {
+    public void showOneButtonDialog(final int titleResource, final int messageResource, final int buttonResourceText,
+                                    final DialogInterface.OnClickListener buttonListener, FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new OneButtonDialog(applicationContext.getString(titleResource),
-                    applicationContext.getString(messageResource),
-                    applicationContext.getString(buttonResourceText), buttonListener);
-            dialogFragment.show(fm, OKAY);
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new OneButtonDialog( applicationContext.getString( titleResource ),
+                    applicationContext.getString( messageResource ), applicationContext.getString( buttonResourceText ), buttonListener );
+            dialogFragment.show( fm, OKAY );
         }
     }
 
     @Override
-    public void showOneButtonDialog(final String titleResource, final String messageResource,
-                                    final String buttonResourceText,
-                                    final DialogInterface.OnClickListener buttonListener,
-                                    FragmentManager fm) {
-        dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new OneButtonDialog(titleResource, messageResource, buttonResourceText, buttonListener);
-            dialogFragment.show(fm, OKAY);
+    public void showOneButtonDialog(final String titleResource, final String messageResource, final String buttonResourceText,
+                                    final DialogInterface.OnClickListener buttonListener, FragmentManager fm) {
 
+        dismiss();
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new OneButtonDialog( titleResource, messageResource, buttonResourceText, buttonListener );
+            dialogFragment.show( fm, OKAY );
         }
     }
 
     @Override
-    public void showTwoButtonDialog(final int titleResource, final int messageResource,
-                                    final int yesResourceText, final int noResourceText,
+    public void showTwoButtonDialog(final int titleResource, final int messageResource, final int yesResourceText, final int noResourceText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new TwoButtonDialog(applicationContext.getString(titleResource),
-                    applicationContext.getString(messageResource), applicationContext.getString(yesResourceText),
-                    yesListener, applicationContext.getString(noResourceText), noListener);
-            dialogFragment.show(fm, YESNO);
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new TwoButtonDialog( applicationContext.getString( titleResource ),
+                    applicationContext.getString( messageResource ), applicationContext.getString( yesResourceText ), yesListener,
+                    applicationContext.getString( noResourceText ), noListener );
+            dialogFragment.show( fm, YESNO );
         }
     }
 
     @Override
-    public void showTwoButtonDialog(final String title, final String message,
-                                    final String yesText, final String noText,
+    public void showTwoButtonDialog(final String title, final String message, final String yesText, final String noText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new TwoButtonDialog(title,
-                    message, yesText,
-                    yesListener, noText, noListener);
-            dialogFragment.show(fm, YESNO);
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new TwoButtonDialog( title, message, yesText, yesListener, noText, noListener );
+            dialogFragment.show( fm, YESNO );
         }
     }
 
     @Override
-    public void showCustomOneButtonDialog(final int titleResource, final View contentView,
-                                          final int yesResourceText,
-                                          final DialogInterface.OnClickListener yesListener,
-                                          FragmentManager fm) {
+    public void showCustomOneButtonDialog(final int titleResource, final ViewProvider contentView, final int yesResourceText,
+                                          final DialogInterface.OnClickListener yesListener, FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new OneButtonDialog(applicationContext.getString(titleResource), contentView,
-                    applicationContext.getString(yesResourceText), yesListener);
-            dialogFragment.show(fm, OKAY);
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new OneButtonDialog( applicationContext.getString( titleResource ), contentView,
+                    applicationContext.getString( yesResourceText ), yesListener );
+            dialogFragment.show( fm, OKAY );
         }
     }
 
     @Override
-    public void showCustomTwoButtonDialog(final int titleResource, final View contentView,
-                                          final int yesResourceText, final int noResourceText,
-                                          final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
-                                          FragmentManager fm) {
+    public void showCustomTwoButtonDialog(final int titleResource, final ViewProvider contentView, final int yesResourceText,
+                                          final int noResourceText, final DialogInterface.OnClickListener yesListener,
+                                          final DialogInterface.OnClickListener noListener, FragmentManager fm) {
+
         dismiss();
-        if (dialogFragment == null && fm != null ){
-            dialogFragment = new TwoButtonDialog(applicationContext.getString(titleResource), contentView,
-                    applicationContext.getString(yesResourceText), yesListener,
-                    applicationContext.getString(noResourceText), noListener);
-            dialogFragment.show(fm, YESNO);
+        if (dialogFragment == null && fm != null) {
+            dialogFragment = new TwoButtonDialog( applicationContext.getString( titleResource ), contentView,
+                    applicationContext.getString( yesResourceText ), yesListener, applicationContext.getString( noResourceText ),
+                    noListener );
+            dialogFragment.show( fm, YESNO );
         }
     }
+
 
 
     /**
@@ -190,7 +194,7 @@ public class DefaultDialogs implements IDefaultDialogs {
     public static class AlertDialogFragment extends BaseDialogFragment {
 
         private static final String TERMINATE = "terminate";
-        private static final String MESSAGE = "message";
+        private static final String MESSAGE   = "message";
 
         @Deprecated
         public AlertDialogFragment() {
@@ -299,7 +303,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         private String                          message;
         private String                          neutralButton;
         private DialogInterface.OnClickListener neutralListener;
-        private View                            customView;
+        private ViewProvider                    customView;
         private boolean cancelable = false;
 
         @Deprecated
@@ -315,7 +319,8 @@ public class DefaultDialogs implements IDefaultDialogs {
             this.neutralListener = neutralListener;
         }
 
-        public OneButtonDialog(String title, View customView, String neutralButton, DialogInterface.OnClickListener neutralListener) {
+        public OneButtonDialog(String title, ViewProvider customView, String neutralButton,
+                               DialogInterface.OnClickListener neutralListener) {
 
             this.title = title;
             this.customView = customView;
@@ -342,7 +347,7 @@ public class DefaultDialogs implements IDefaultDialogs {
                        .setNeutralButton( neutralButton, neutralListener );
 
                 if (customView != null)
-                    builder.setView( customView );
+                    builder.setView( customView.getView() );
 
                 return builder.create();
             }
@@ -353,8 +358,8 @@ public class DefaultDialogs implements IDefaultDialogs {
         public void onDestroyView() {
 
             super.onDestroyView();
-            if (customView != null && customView.getParent() != null) {
-                ((ViewGroup) customView.getParent()).removeView( customView );
+            if (customView != null && customView.getView() != null && customView.getView().getParent() != null) {
+                ((ViewGroup) customView.getView().getParent()).removeView( customView.getView() );
             }
         }
     }
@@ -368,7 +373,7 @@ public class DefaultDialogs implements IDefaultDialogs {
         private DialogInterface.OnClickListener yesListener;
         private String                          noButton;
         private DialogInterface.OnClickListener noListener;
-        private View                            customView;
+        private ViewProvider                    customView;
         private boolean cancelable = false;
 
         public TwoButtonDialog() {
@@ -386,7 +391,7 @@ public class DefaultDialogs implements IDefaultDialogs {
             this.noListener = noListener;
         }
 
-        public TwoButtonDialog(String title, View customView, String yesButton, DialogInterface.OnClickListener yesListener,
+        public TwoButtonDialog(String title, ViewProvider customView, String yesButton, DialogInterface.OnClickListener yesListener,
                                String noButton, DialogInterface.OnClickListener noListener) {
 
             this.title = title;
@@ -399,41 +404,42 @@ public class DefaultDialogs implements IDefaultDialogs {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setRetainInstance(true);
+
+            super.onCreate( savedInstanceState );
+            setRetainInstance( true );
         }
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            if (yesListener != null && noListener != null){
-                setCancelable(cancelable);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setCancelable(cancelable)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setPositiveButton(yesButton, yesListener)
-                        .setNegativeButton(noButton, noListener);
+            if (yesListener != null && noListener != null) {
+                setCancelable( cancelable );
+                AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+                builder.setCancelable( cancelable )
+                       .setTitle( title )
+                       .setMessage( message )
+                       .setPositiveButton( yesButton, yesListener )
+                       .setNegativeButton( noButton, noListener );
 
-                if (customView != null){
-                    builder.setView(customView);
+                if (customView != null) {
+                    builder.setView( customView.getView() );
                 }
-
 
                 return builder.create();
             }
-            return super.onCreateDialog(savedInstanceState);
+            return super.onCreateDialog( savedInstanceState );
         }
 
         @Override
         public void onDestroyView() {
 
             super.onDestroyView();
-            if ( customView != null && customView.getParent() != null){
-                ((ViewGroup)customView.getParent()).removeView( customView );
+            if (customView != null && customView.getView() != null && customView.getView().getParent() != null) {
+                ((ViewGroup) customView.getView().getParent()).removeView( customView.getView() );
             }
         }
     }
+
 
     protected static class BaseDialogFragment extends DialogFragment {
 
@@ -443,22 +449,26 @@ public class DefaultDialogs implements IDefaultDialogs {
 
         @Override
         public void show(FragmentManager manager, String tag) {
+
             try {
                 //nasty hack for http://code.google.com/p/android/issues/detail?id=23096 :/
-                super.show(manager, tag);
-            } catch (IllegalStateException e){
-                Log.w(TAG, "Ignoring IllegalStateException...");
+                super.show( manager, tag );
+            }
+            catch (IllegalStateException e) {
+                Log.w( TAG, "Ignoring IllegalStateException..." );
             }
         }
 
         @Override
         public int show(FragmentTransaction transaction, String tag) {
+
             try {
                 //nasty hack for http://code.google.com/p/android/issues/detail?id=23096 :/
-                return super.show(transaction, tag);
-            } catch (IllegalStateException e){
-                Log.w(TAG, "Ignoring IllegalStateException...");
-                return  -1;
+                return super.show( transaction, tag );
+            }
+            catch (IllegalStateException e) {
+                Log.w( TAG, "Ignoring IllegalStateException..." );
+                return -1;
             }
         }
     }
