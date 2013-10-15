@@ -164,5 +164,14 @@
             </extension>
         </extensions>
     </build>
-    
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>7.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
 </project>

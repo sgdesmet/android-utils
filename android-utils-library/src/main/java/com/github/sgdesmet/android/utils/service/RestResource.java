@@ -2,7 +2,6 @@ package com.github.sgdesmet.android.utils.service;
 
 import android.util.Log;
 import com.google.gson.*;
-import com.sun.istack.internal.NotNull;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.*;
 import org.apache.commons.codec.binary.Base64;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import org.jetbrains.annotations.NotNull;
 
 
 /**
