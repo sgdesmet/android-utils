@@ -74,7 +74,7 @@ public class RestService extends IntentService {
             return;
         }
         ResultReceiver callback = extras.getParcelable( EXTRA_CALLBACK );
-        HttpResource.Callback resultHandler = getResultHandler( callback, intent );
+        RestResource.Callback resultHandler = getResultHandler( callback, intent );
         Serializable content = extras.getSerializable( CONTENT );
         Class responseType = (Class) extras.getSerializable( RESPONSE_TYPE );
         //query params
@@ -96,7 +96,7 @@ public class RestService extends IntentService {
         String password = extras.getString( BASIC_AUTH_PASSWORD );
 
 
-        HttpResource resource = HttpResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers );
+        RestResource resource = RestResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers );
         if (username != null || password != null) {
             resource.basicAuth( username, password );
         }
@@ -126,7 +126,7 @@ public class RestService extends IntentService {
         }
     }
 
-    protected void configure(HttpResource rest) {
+    protected void configure(RestResource rest) {
         //override if necessary
     }
 
@@ -139,12 +139,12 @@ public class RestService extends IntentService {
         return gson;
     }
 
-    protected HttpResource.Callback getResultHandler(ResultReceiver callback, Intent intent) {
+    protected RestResource.Callback getResultHandler(ResultReceiver callback, Intent intent) {
 
         return new RestServiceCallback<Serializable>( callback, intent );
     }
 
-    protected class RestServiceCallback<R extends Serializable> implements HttpResource.Callback<R> {
+    protected class RestServiceCallback<R extends Serializable> implements RestResource.Callback<R> {
 
         protected final ResultReceiver callback;
         protected final Intent         originalIntent;

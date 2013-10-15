@@ -8,7 +8,7 @@ import android.os.*;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
-import com.github.sgdesmet.android.utils.service.HttpResource;
+import com.github.sgdesmet.android.utils.service.RestResource;
 import com.github.sgdesmet.android.utils.service.image.loader.*;
 import com.github.sgdesmet.android.utils.util.AndroidUtils;
 import com.github.sgdesmet.android.utils.util.BitmapUtils;
@@ -133,8 +133,8 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
         InputStream is = null;
         try {
             connection = (HttpURLConnection) new URL( url ).openConnection();
-            connection.setConnectTimeout( HttpResource.DEFAULT_TIMEOUT ); //TODO may need to add a timer to forcibly terminate if necessary?
-            connection.setReadTimeout( HttpResource.DEFAULT_TIMEOUT );
+            connection.setConnectTimeout( RestResource.DEFAULT_TIMEOUT ); //TODO may need to add a timer to forcibly terminate if necessary?
+            connection.setReadTimeout( RestResource.DEFAULT_TIMEOUT );
 
             is = connection.getInputStream();
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
