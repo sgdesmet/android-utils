@@ -220,6 +220,7 @@ public class RestResource {
 
                     Serializable json = parseJSON( connection.getInputStream(), expectedResultType );
                     callback.onResponse( json, connection.getResponseCode(), connection.getHeaderFields() );
+                    return;
                 } else {
                     //reset disconnect timer
                     if (forceDisconnect != null)
@@ -230,6 +231,7 @@ public class RestResource {
 
                     String errorBody = toString( connection.getErrorStream() );
                     callback.onResponse( errorBody, connection.getResponseCode(), connection.getHeaderFields() );
+                    return;
                 }
             }
             catch (JsonParseException e) {
