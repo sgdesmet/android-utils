@@ -37,6 +37,7 @@ public class RestService extends IntentService {
     public static final String BASIC_AUTH_USERNAME = BASE + ".Username";
     public static final String BASIC_AUTH_PASSWORD = BASE + ".Password";
     public static final String QUERY_PARAMS        = BASE + ".Params";
+    public static final String FORM_PARAMS         = BASE + ".Params";
     public static final String HEADERS             = BASE + ".Headers";
     public static final String TIMEOUT             = BASE + ".Timeout";
 
@@ -77,6 +78,14 @@ public class RestService extends IntentService {
         RestResource.Callback resultHandler = getResultHandler( callback, intent );
         Serializable content = extras.getSerializable( CONTENT );
         Class responseType = (Class) extras.getSerializable( RESPONSE_TYPE );
+        //form params
+        Bundle formBundle = extras.getBundle( FORM_PARAMS );
+        HashMap<String, String> formParams = new HashMap<String, String>();
+        if (formBundle != null)
+            for (String key : formBundle.keySet()) {
+                formParams.put( key, formBundle.getString( key ) );
+            }
+
         //query params
         Bundle queryBundle = extras.getBundle( QUERY_PARAMS );
         HashMap<String, String> queryParams = new HashMap<String, String>();
@@ -95,8 +104,7 @@ public class RestService extends IntentService {
         String username = extras.getString( BASIC_AUTH_USERNAME );
         String password = extras.getString( BASIC_AUTH_PASSWORD );
 
-
-        RestResource resource = RestResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers );
+        RestResource resource = RestResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers ).form( formParams );
         if (username != null || password != null) {
             resource.basicAuth( username, password );
         }
@@ -182,7 +190,7 @@ public class RestService extends IntentService {
                 for (String headerValue : headers.get( key )) {
                     value += headerValue + ",";
                 }
-                value = value.substring( 0, Math.max( 0, value.length() -1 ) );
+                value = value.substring( 0, Math.max( 0, value.length() - 1 ) );
                 bundle.putString( key, value );
             }
             return bundle;

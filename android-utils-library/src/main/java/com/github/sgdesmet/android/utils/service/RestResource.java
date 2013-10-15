@@ -52,6 +52,7 @@ public class RestResource {
 
     private Map<String, String> headers;
     private Map<String, String> query;
+    private Map<String, String> formParams;
     private Gson                gson;
     private String              url;
     private int timeout         = DEFAULT_TIMEOUT;
@@ -105,8 +106,13 @@ public class RestResource {
 
     public RestResource query(final Map<String, String> query) {
 
-        if (query != null)
-            this.query = new HashMap<String, String>( query );
+        this.query = new HashMap<String, String>( query );
+        return this;
+    }
+
+    public RestResource form(final Map<String, String> form) {
+
+        this.formParams = new HashMap<String, String>( form );
         return this;
     }
 
@@ -208,6 +214,10 @@ public class RestResource {
                         //parse error, invalid type
                         throw new IOException( e );
                     }
+                    out.close();
+                } else if (formParams != null && !formParams.isEmpty()){
+                    PrintWriter out = new PrintWriter( connection.getOutputStream() );
+                    out.print( getParametersString( formParams ) );
                     out.close();
                 }
 
