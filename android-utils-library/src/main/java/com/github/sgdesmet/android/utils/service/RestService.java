@@ -36,8 +36,8 @@ public class RestService extends IntentService {
 
     public static final String BASIC_AUTH_USERNAME = BASE + ".Username";
     public static final String BASIC_AUTH_PASSWORD = BASE + ".Password";
-    public static final String QUERY_PARAMS        = BASE + ".Params";
-    public static final String FORM_PARAMS         = BASE + ".Params";
+    public static final String QUERY_PARAMS        = BASE + ".QueryParams";
+    public static final String FORM_PARAMS         = BASE + ".FormParams";
     public static final String HEADERS             = BASE + ".Headers";
     public static final String TIMEOUT             = BASE + ".Timeout";
 
