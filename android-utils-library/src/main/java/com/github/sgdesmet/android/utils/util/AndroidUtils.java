@@ -31,6 +31,7 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.telephony.TelephonyManager;
 import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
@@ -39,6 +40,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -235,10 +237,22 @@ public class AndroidUtils {
      * @param source
      * @return
      */
-    public static CharSequence fromHtml(String source) {
+    public static CharSequence fromHtml(@Nullable final String source) {
         if (source == null)
             return null;
         return Html.fromHtml( source.replace( "\r\n", "<br/>" ).replace( "\n", "<br/>" ) );
+    }
+
+    /**
+     * Wrapper around Html.toHtml. Null input is allowed (returns null), and line breaks are removed.
+     * @param text
+     * @return
+     */
+    public static CharSequence toHtml(@Nullable final Spanned text){
+        if (text == null)
+            return null;
+        String converted = Html.toHtml( text );
+        return converted.replace( "\n", "" );
     }
 
     public static int getCurrentApplicationVersion(Context context) {
@@ -326,13 +340,5 @@ public class AndroidUtils {
         return resolveInfo != null && !resolveInfo.isEmpty();
     }
 
-    public static boolean stringNotBlank(final String string) {
 
-        return string != null && string.trim().length() != 0;
-    }
-
-    public static boolean stringBlank(final String string) {
-
-        return !stringNotBlank( string );
-    }
 }
