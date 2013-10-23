@@ -1,6 +1,7 @@
 package com.github.sgdesmet.android.utils.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -29,7 +30,7 @@ public class SSLUtils {
      */
     public static void initSsl(final Context applicationContext, final String trustStoreName, final String trustStorePass) {
 
-        if (AndroidUtils.stringNotBlank( trustStoreName )) {
+        if (!TextUtils.isEmpty( trustStoreName )) {
             try {
                 HttpsURLConnection.setDefaultSSLSocketFactory(
                         createSslContext( loadTrustStore( applicationContext, trustStoreName, trustStorePass ) ).getSocketFactory() );

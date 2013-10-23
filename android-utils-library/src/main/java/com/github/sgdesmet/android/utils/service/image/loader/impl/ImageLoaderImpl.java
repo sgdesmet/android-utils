@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.util.LruCache;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import com.github.sgdesmet.android.utils.service.RestResource;
@@ -181,7 +182,7 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
         @Override
         public void run() {
 
-            if (AndroidUtils.stringBlank( imageUrl )) {
+            if (TextUtils.isEmpty( imageUrl )) {
 
                 setResourceImage( missingResource );
                 return;
@@ -256,7 +257,7 @@ public class ImageLoaderImpl implements ImageLoader, ComponentCallbacks {
         @Override
         public void run() {
 
-            if (AndroidUtils.stringBlank( imageUrl )) {
+            if (TextUtils.isEmpty( imageUrl )) {
 
                 callback.failure( imageUrl );
                 return;
