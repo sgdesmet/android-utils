@@ -93,16 +93,9 @@ public class DefaultDialogs implements IDefaultDialogs {
     public void dismiss() {
 
         if (dialogFragment != null) {
-            try {
-                dialogFragment.dismiss();
-            }
-            catch (Exception ignored) {
-                //catch can't commit after onsaveinstance exceptions. Bit of a hack but oh well
-                Log.e( TAG, "Error while attempting to dismiss dialog: " + ignored );
-            }
-            finally {
-                dialogFragment = null;
-            }
+
+            dialogFragment.dismissAllowingStateLoss();
+            dialogFragment = null;
         }
     }
 
@@ -180,8 +173,6 @@ public class DefaultDialogs implements IDefaultDialogs {
             dialogFragment.show( fm, YESNO );
         }
     }
-
-
 
     /**
      * Shows an alert dialog

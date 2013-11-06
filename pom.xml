@@ -51,7 +51,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <android.version>4.0.1.2</android.version>
-        <android-support-v4.version>r7</android-support-v4.version>
+        <android-support-v4.version>18.0.0</android-support-v4.version>
 
         <android-maven-plugin.version>3.6.0</android-maven-plugin.version>
 
@@ -70,8 +70,10 @@
                 <version>${android.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <!-- important! Copy the support library from your android sdk folder (sdk_folder/extras/android/m2repository)
+            to your local maven repo! -->
             <dependency>
-                <groupId>com.google.android</groupId>
+                <groupId>com.android.support</groupId>
                 <artifactId>support-v4</artifactId>
                 <version>${android-support-v4.version}</version>
             </dependency>
