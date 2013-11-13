@@ -93,8 +93,8 @@ public class DefaultDialogs implements IDefaultDialogs {
     public void dismiss() {
 
         if (dialogFragment != null) {
-
-            dialogFragment.dismissAllowingStateLoss();
+            if (dialogFragment.getFragmentManager() != null)
+                dialogFragment.dismissAllowingStateLoss();
             dialogFragment = null;
         }
     }
