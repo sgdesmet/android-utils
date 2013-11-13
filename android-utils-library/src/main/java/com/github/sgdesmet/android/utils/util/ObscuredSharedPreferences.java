@@ -197,7 +197,7 @@ public class ObscuredSharedPreferences implements SharedPreferences {
                     Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID) :
                     "9774d56d682e549c"; //android emu
             pbeCipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(id.getBytes(UTF8), 20));
-            return Base64.encodeToString( pbeCipher.doFinal( bytes ), Base64.DEFAULT );
+            return Base64.encodeToString( pbeCipher.doFinal( bytes ), Base64.NO_WRAP );
 
         } catch( Exception e ) {
             throw new RuntimeException(e);
@@ -207,7 +207,7 @@ public class ObscuredSharedPreferences implements SharedPreferences {
 
     protected String decrypt(String value){
         try {
-            final byte[] bytes = value!=null ? Base64.decode(value, Base64.DEFAULT) : new byte[0];
+            final byte[] bytes = value!=null ? Base64.decode(value, Base64.NO_WRAP) : new byte[0];
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
             SecretKey key = keyFactory.generateSecret(new PBEKeySpec(secret.toCharArray()));
             Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");

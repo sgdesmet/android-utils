@@ -91,7 +91,7 @@ public class RestResource {
     public RestResource basicAuth(final String username, final String password) {
 
         String encodedCredentials = Base64.encodeToString(
-                ((username != null? username: "") + ":" + (password != null? password: "")).getBytes(), Base64.DEFAULT );
+                ((username != null? username: "") + ":" + (password != null? password: "")).getBytes(), Base64.NO_WRAP );
 
         headers.put( AUTHORIZATION_HEADER, String.format( "%s %s", AUTHORIZATION_BASIC, encodedCredentials ) );
         return this;
