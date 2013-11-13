@@ -50,6 +50,10 @@ public class BitmapUtils {
         Bitmap shadowImage = originalBitmap.extractAlpha(shadowPaint, offsetXY);
         Bitmap shadowImage32 = shadowImage.copy(Bitmap.Config.ARGB_8888, true);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            shadowImage32.setPremultiplied( true );
+        }
+
         Canvas c = new Canvas(shadowImage32);
         c.drawBitmap(originalBitmap, -offsetXY[0], -offsetXY[1], null);
 
