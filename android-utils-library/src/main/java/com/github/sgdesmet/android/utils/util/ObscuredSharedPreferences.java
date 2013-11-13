@@ -4,8 +4,8 @@ package com.github.sgdesmet.android.utils.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings;
-import org.apache.commons.codec.binary.Base64;
 
+import android.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -192,12 +192,12 @@ public class ObscuredSharedPreferences implements SharedPreferences {
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
             SecretKey key = keyFactory.generateSecret(new PBEKeySpec(secret.toCharArray()));
             Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
-            String id = Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID) != null &&
-                    Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID).length() != 0?
-                    Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID) :
+            String id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID) != null &&
+                    Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID).length() != 0?
+                    Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID) :
                     "9774d56d682e549c"; //android emu
             pbeCipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(id.getBytes(UTF8), 20));
-            return new String(Base64.encodeBase64(pbeCipher.doFinal(bytes)),UTF8);
+            return Base64.encodeToString( pbeCipher.doFinal( bytes ), Base64.DEFAULT );
 
         } catch( Exception e ) {
             throw new RuntimeException(e);
@@ -207,13 +207,13 @@ public class ObscuredSharedPreferences implements SharedPreferences {
 
     protected String decrypt(String value){
         try {
-            final byte[] bytes = value!=null ? Base64.decodeBase64(value.getBytes()) : new byte[0];
+            final byte[] bytes = value!=null ? Base64.decode(value, Base64.DEFAULT) : new byte[0];
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
             SecretKey key = keyFactory.generateSecret(new PBEKeySpec(secret.toCharArray()));
             Cipher pbeCipher = Cipher.getInstance("PBEWithMD5AndDES");
-            String id = Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID) != null &&
-                    Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID).length() != 0?
-                    Settings.Secure.getString(context.getContentResolver(),Settings.System.ANDROID_ID) :
+            String id = Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID) != null &&
+                    Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID).length() != 0?
+                    Settings.Secure.getString(context.getContentResolver(),Settings.Secure.ANDROID_ID) :
                     "9774d56d682e549c"; //android emu
             pbeCipher.init(Cipher.DECRYPT_MODE, key, new PBEParameterSpec(id.getBytes(UTF8), 20));
             return new String(pbeCipher.doFinal(bytes),UTF8);

@@ -1,10 +1,10 @@
 package com.github.sgdesmet.android.utils.service;
 
+import android.util.Base64;
 import android.util.Log;
 import com.google.gson.*;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.*;
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -90,8 +90,8 @@ public class RestResource {
 
     public RestResource basicAuth(final String username, final String password) {
 
-        String encodedCredentials = new String(
-                Base64.encodeBase64( ((username != null? username: "") + ":" + (password != null? password: "")).getBytes() ) );
+        String encodedCredentials = Base64.encodeToString(
+                ((username != null? username: "") + ":" + (password != null? password: "")).getBytes(), Base64.DEFAULT );
 
         headers.put( AUTHORIZATION_HEADER, String.format( "%s %s", AUTHORIZATION_BASIC, encodedCredentials ) );
         return this;
@@ -215,7 +215,7 @@ public class RestResource {
                         throw new IOException( e );
                     }
                     out.close();
-                } else if (formParams != null && !formParams.isEmpty()){
+                } else if (formParams != null && !formParams.isEmpty()) {
                     PrintWriter out = new PrintWriter( connection.getOutputStream() );
                     out.print( getParametersString( formParams ) );
                     out.close();
