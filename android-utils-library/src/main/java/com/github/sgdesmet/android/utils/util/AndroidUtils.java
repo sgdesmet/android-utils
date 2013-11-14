@@ -110,18 +110,14 @@ public class AndroidUtils {
     public static Uri getOutputMediaFileUri(final Context context, final String name, final int type)
             throws FileNotFoundException {
 
-        return Uri.fromFile( getOutputMediaFile( context, name, type ) );
+        File file = getOutputMediaFile( context, name, type );
+        return file != null ? Uri.fromFile( file ) : null;
     }
 
     /**
-     * Create a File for saving an image or video
-     *
-     * @param context
-     * @param name
-     * @param type
-     * @return
-     * @throws FileNotFoundException
+     * Create a File for saving an image or video, which is accessible by other apps
      */
+    @Nullable
     public static File getOutputMediaFile(final Context context, final String name, final int type)
             throws FileNotFoundException {
 
@@ -134,37 +130,27 @@ public class AndroidUtils {
                 mediaStorageDir = context.getExternalFilesDir( Environment.DIRECTORY_MOVIES );
             else
                 throw new FileNotFoundException( "Unknown file type requested" );
-        } else {
 
-            if (type == MEDIA_TYPE_IMAGE)
-                mediaStorageDir = new File( context.getFilesDir(), PICTURES_DIR );
-            else if (type == MEDIA_TYPE_VIDEO)
-                mediaStorageDir = new File( context.getFilesDir(), MOVIES_DIR );
-            else
+            if (mediaStorageDir == null)
+                return null;
+
+            // Create a media file name
+            File mediaFile;
+            if (type == MEDIA_TYPE_IMAGE) {
+                mediaFile = new File( mediaStorageDir, "IMG_" + name + ".jpg" );
+            } else if (type == MEDIA_TYPE_VIDEO) {
+                mediaFile = new File( mediaStorageDir, "VID_" + name + ".mp4" );
+            } else {
                 throw new FileNotFoundException( "Unknown file type requested" );
-        }
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d( TAG, "failed to create directory" );
-                throw new FileNotFoundException( "failed to create directory" );
             }
+            if (!mediaFile.setWritable( true, false ))
+                Log.w( TAG, "Can't set output media file writable" );
+            if (!mediaFile.setReadable( true, false ))
+                Log.w( TAG, "Can't set output media file readable" );
+            return mediaFile;
         }
 
-        // Create a media file name
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File( mediaStorageDir.getPath() + File.separator +
-                                  "IMG_" + name + ".jpg" );
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File( mediaStorageDir.getPath() + File.separator +
-                                  "VID_" + name + ".mp4" );
-        } else {
-            throw new FileNotFoundException( "Unknown file type requested" );
-        }
-
-        return mediaFile;
+        return null;
     }
 
     /**
