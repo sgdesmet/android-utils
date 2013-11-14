@@ -107,7 +107,7 @@ public class AndroidUtils {
     /**
      * Create a file Uri for saving an image or video
      */
-    public static Uri getOutputMediaFileUri(Context context, String name, int type)
+    public static Uri getOutputMediaFileUri(final Context context, final String name, final int type)
             throws FileNotFoundException {
 
         return Uri.fromFile( getOutputMediaFile( context, name, type ) );
@@ -115,57 +115,56 @@ public class AndroidUtils {
 
     /**
      * Create a File for saving an image or video
+     *
+     * @param context
+     * @param name
+     * @param type
+     * @return
+     * @throws FileNotFoundException
      */
-    public static File getOutputMediaFile(Context context, String name, int type)
+    public static File getOutputMediaFile(final Context context, final String name, final int type)
             throws FileNotFoundException {
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
 
+        File mediaStorageDir;
         if (Environment.getExternalStorageState().equals( Environment.MEDIA_MOUNTED )) {
 
-            File mediaStorageDir;
+            if (type == MEDIA_TYPE_IMAGE)
+                mediaStorageDir = context.getExternalFilesDir( Environment.DIRECTORY_PICTURES );
+            else if (type == MEDIA_TYPE_VIDEO)
+                mediaStorageDir = context.getExternalFilesDir( Environment.DIRECTORY_MOVIES );
+            else
+                throw new FileNotFoundException( "Unknown file type requested" );
+        } else {
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) {
-                if (type == MEDIA_TYPE_IMAGE)
-                    mediaStorageDir = new File( Environment.getExternalStorageDirectory(), PICTURES_DIR );
-                else if (type == MEDIA_TYPE_VIDEO)
-                    mediaStorageDir = new File( Environment.getExternalStorageDirectory(), MOVIES_DIR );
-                else
-                    throw new FileNotFoundException( "Unknown file type requested" );
-            } else {
-                if (type == MEDIA_TYPE_IMAGE)
-                    mediaStorageDir = context.getExternalFilesDir( Environment.DIRECTORY_PICTURES );
-                else if (type == MEDIA_TYPE_VIDEO)
-                    mediaStorageDir = context.getExternalFilesDir( Environment.DIRECTORY_MOVIES );
-                else
-                    throw new FileNotFoundException( "Unknown file type requested" );
+            if (type == MEDIA_TYPE_IMAGE)
+                mediaStorageDir = new File( context.getFilesDir(), PICTURES_DIR );
+            else if (type == MEDIA_TYPE_VIDEO)
+                mediaStorageDir = new File( context.getFilesDir(), MOVIES_DIR );
+            else
+                throw new FileNotFoundException( "Unknown file type requested" );
+        }
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d( TAG, "failed to create directory" );
+                throw new FileNotFoundException( "failed to create directory" );
             }
-            // This location works best if you want the created images to be shared
-            // between applications and persist after your app has been uninstalled.
+        }
 
-            // Create the storage directory if it does not exist
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    Log.d( TAG, "failed to create directory" );
-                    throw new FileNotFoundException( "failed to create directory" );
-                }
-            }
+        // Create a media file name
+        File mediaFile;
+        if (type == MEDIA_TYPE_IMAGE) {
+            mediaFile = new File( mediaStorageDir.getPath() + File.separator +
+                                  "IMG_" + name + ".jpg" );
+        } else if (type == MEDIA_TYPE_VIDEO) {
+            mediaFile = new File( mediaStorageDir.getPath() + File.separator +
+                                  "VID_" + name + ".mp4" );
+        } else {
+            throw new FileNotFoundException( "Unknown file type requested" );
+        }
 
-            // Create a media file name
-            File mediaFile;
-            if (type == MEDIA_TYPE_IMAGE) {
-                mediaFile = new File( mediaStorageDir.getPath() + File.separator +
-                                      "IMG_" + name + ".jpg" );
-            } else if (type == MEDIA_TYPE_VIDEO) {
-                mediaFile = new File( mediaStorageDir.getPath() + File.separator +
-                                      "VID_" + name + ".mp4" );
-            } else {
-                return null;
-            }
-
-            return mediaFile;
-        } else
-            throw new FileNotFoundException( "Device storage is not available, state is: " + Environment.getExternalStorageState() );
+        return mediaFile;
     }
 
     /**
@@ -234,10 +233,9 @@ public class AndroidUtils {
 
     /**
      * Wrapper around Html.fromHtml which checks for null input, and converts line breaks to {@code <br/>}
-     * @param source
-     * @return
      */
     public static CharSequence fromHtml(@Nullable final String source) {
+
         if (source == null)
             return null;
         return Html.fromHtml( source.replace( "\r\n", "<br/>" ).replace( "\n", "<br/>" ) );
@@ -245,10 +243,9 @@ public class AndroidUtils {
 
     /**
      * Wrapper around Html.toHtml. Null input is allowed (returns null), and line breaks are removed.
-     * @param text
-     * @return
      */
-    public static CharSequence toHtml(@Nullable final Spanned text){
+    public static CharSequence toHtml(@Nullable final Spanned text) {
+
         if (text == null)
             return null;
         String converted = Html.toHtml( text );
@@ -339,6 +336,4 @@ public class AndroidUtils {
         List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
         return resolveInfo != null && !resolveInfo.isEmpty();
     }
-
-
 }
