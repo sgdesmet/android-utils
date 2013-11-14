@@ -41,7 +41,7 @@ public class BitmapUtils {
      * @param originalBitmap
      * @return
      */
-    public static Bitmap getBitmapWithShadow(Context applicationContext, Bitmap originalBitmap, float shadowRadius){
+    public static Bitmap getBitmapWithShadow(Bitmap originalBitmap, float shadowRadius){
         BlurMaskFilter blurFilter = new BlurMaskFilter(shadowRadius, BlurMaskFilter.Blur.OUTER);
         Paint shadowPaint = new Paint();
         shadowPaint.setMaskFilter(blurFilter);
