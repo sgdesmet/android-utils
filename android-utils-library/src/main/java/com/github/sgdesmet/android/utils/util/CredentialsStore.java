@@ -53,8 +53,10 @@ public class CredentialsStore {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(key, value);
             editor.commit();
+        } else if (context == null) {
+            Log.e(TAG, String.format( "Store: context cannot be null" ));
         } else {
-            Log.e(TAG, "Context and key cannot be null");
+            Log.e(TAG, String.format( "Store: key cannot be null" ));
         }
     }
 
@@ -62,10 +64,12 @@ public class CredentialsStore {
         if (context != null && key != null){
             SharedPreferences prefs = getObscuredPreferences(PREFS_FILE_NAME, secret);
             return prefs.getString(key, null);
+        } else if (context == null) {
+            Log.e(TAG, String.format( "Get: context cannot be null" ));
         } else {
-            Log.e(TAG, "Context and key cannot be null");
-            return null;
+            Log.e(TAG, String.format( "Get: key cannot be null" ));
         }
+        return null;
     }
 
     public void delete(String key){
@@ -74,8 +78,10 @@ public class CredentialsStore {
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove(key);
             editor.commit();
+        } else if (context == null) {
+            Log.e(TAG, String.format( "Delete: context cannot be null" ));
         } else {
-            Log.e(TAG, "Context and key cannot be null");
+            Log.e(TAG, String.format( "Delete: key cannot be null" ));
         }
     }
 
@@ -87,8 +93,8 @@ public class CredentialsStore {
             
             editor.commit();
 
-        }  else {
-            Log.e(TAG, "Context and key cannot be null");
+        } else{
+            Log.e(TAG, String.format( "ClearAll: context cannot be null" ));
         }
     }
 
