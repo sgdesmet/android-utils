@@ -88,7 +88,7 @@ public class CredentialsStore {
             editor.commit();
 
         }  else {
-            Log.e(TAG, "Context and key cannot be nulll");
+            Log.e(TAG, "Context and key cannot be null");
         }
     }
 
