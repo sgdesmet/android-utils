@@ -225,14 +225,6 @@ public class DefaultDialogs implements IDefaultDialogs {
             return builder.create();
         }
 
-        @Override
-        public void onDestroyView() {
-            // workaround for issue http://code.google.com/p/android/issues/detail?id=17423 (dialogfragment gets dismissed
-            // on orientation change)
-            if (getDialog() != null && getRetainInstance())
-                getDialog().setDismissMessage( null );
-            super.onDestroyView();
-        }
     }
 
 
@@ -277,14 +269,6 @@ public class DefaultDialogs implements IDefaultDialogs {
             return dialog;
         }
 
-        @Override
-        public void onDestroyView() {
-            // workaround for issue http://code.google.com/p/android/issues/detail?id=17423 (dialogfragment gets dismissed
-            // on orientation change)
-            if (getDialog() != null && getRetainInstance())
-                getDialog().setDismissMessage( null );
-            super.onDestroyView();
-        }
     }
 
 
@@ -461,6 +445,15 @@ public class DefaultDialogs implements IDefaultDialogs {
                 Log.w( TAG, "Ignoring IllegalStateException..." );
                 return -1;
             }
+        }
+
+        @Override
+        public void onDestroyView() {
+            // workaround for issue http://code.google.com/p/android/issues/detail?id=17423 (dialogfragment gets dismissed
+            // on orientation change)
+            if (getDialog() != null && getRetainInstance())
+                getDialog().setDismissMessage( null );
+            super.onDestroyView();
         }
     }
 }
