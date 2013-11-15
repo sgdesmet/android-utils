@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.github.sgdesmet</groupId>
         <artifactId>android</artifactId>
-        <version>GIT-SNAPSHOT</version>
+        <version>0.6.14</version>
     </parent>
 
 	<groupId>com.github.sgdesmet.android</groupId>
 	<artifactId>utils</artifactId>
 	<packaging>apklib</packaging>
-	<version>GIT-SNAPSHOT</version>
+	<version>0.6.14</version>
 
 	<dependencies>
 
