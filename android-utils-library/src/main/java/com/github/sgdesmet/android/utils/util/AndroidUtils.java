@@ -22,21 +22,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.*;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.os.StatFs;
+import android.graphics.Point;
+import android.net.*;
+import android.os.*;
 import android.telephony.TelephonyManager;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -73,7 +69,7 @@ public class AndroidUtils {
      * Check if external storage is built-in or removable.
      *
      * @return True if external storage is removable (like an SD card), false
-     *         otherwise.
+     * otherwise.
      */
     public static boolean isExternalStorageRemovable() {
 
@@ -111,7 +107,7 @@ public class AndroidUtils {
             throws FileNotFoundException {
 
         File file = getOutputMediaFile( context, name, type );
-        return file != null ? Uri.fromFile( file ) : null;
+        return file != null? Uri.fromFile( file ): null;
     }
 
     /**
@@ -321,5 +317,14 @@ public class AndroidUtils {
         final Intent intent = new Intent( action );
         List<ResolveInfo> resolveInfo = packageManager.queryIntentActivities( intent, PackageManager.MATCH_DEFAULT_ONLY );
         return resolveInfo != null && !resolveInfo.isEmpty();
+    }
+
+    public static void dismissKeyboard(@Nullable final Activity activity) {
+
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService( Context.INPUT_METHOD_SERVICE );
+            if (activity.getCurrentFocus() != null)
+                imm.hideSoftInputFromWindow( activity.getCurrentFocus().getWindowToken(), 0 );
+        }
     }
 }
