@@ -337,7 +337,6 @@ public class RestResource {
      */
     protected void configureConnection(HttpURLConnection connection) {
 
-        System.setProperty( "http.keepAlive", "false" ); //disable reuse, seems buggy on some devices
         System.setProperty( "http.maxRedirects", "10" );
 
         connection.setInstanceFollowRedirects( true );

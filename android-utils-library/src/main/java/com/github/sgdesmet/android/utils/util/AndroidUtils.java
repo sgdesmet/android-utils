@@ -50,19 +50,8 @@ public class AndroidUtils {
     private static final String PICTURES_DIR = "Pictures";
     private static final String MOVIES_DIR   = "Movies";
 
-    private AndroidUtils() {
+    protected AndroidUtils() {
 
-    }
-
-    /**
-     * Workaround for bug pre-Froyo, see here for more info:
-     * http://android-developers.blogspot.com/2011/09/androids-http-clients.html
-     */
-    public static void disableConnectionReuseIfNecessary() {
-        // HTTP connection reuse which was buggy pre-froyo
-        if (hasHttpConnectionBug()) {
-            System.setProperty( "http.keepAlive", "false" );
-        }
     }
 
     /**
@@ -171,15 +160,6 @@ public class AndroidUtils {
     public static int getMemoryClass(Context context) {
 
         return ((ActivityManager) context.getSystemService( Context.ACTIVITY_SERVICE )).getMemoryClass();
-    }
-
-    /**
-     * Check if OS version has a http URLConnection bug. See here for more information:
-     * http://android-developers.blogspot.com/2011/09/androids-http-clients.html
-     */
-    public static boolean hasHttpConnectionBug() {
-
-        return Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO;
     }
 
     /**
