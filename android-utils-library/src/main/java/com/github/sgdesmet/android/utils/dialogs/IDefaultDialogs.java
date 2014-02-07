@@ -1,9 +1,11 @@
 package com.github.sgdesmet.android.utils.dialogs;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import java.io.Serializable;
+import org.jetbrains.annotations.NotNull;
 
 
 /**

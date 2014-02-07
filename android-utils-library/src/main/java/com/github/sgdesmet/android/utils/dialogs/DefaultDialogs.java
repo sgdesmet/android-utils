@@ -29,6 +29,11 @@ public class DefaultDialogs implements IDefaultDialogs {
     BaseDialogFragment dialogFragment;
     Context            applicationContext;
 
+    public Context getApplicationContext() {
+
+        return applicationContext;
+    }
+
     private static final String TAG = DefaultDialogs.class.getSimpleName();
 
 
