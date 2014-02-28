@@ -27,7 +27,7 @@ public class SimpleHeaderItem implements ListItem {
     public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
 
         this.title = title;
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     public CharSequence getTitle() {
@@ -47,7 +47,7 @@ public class SimpleHeaderItem implements ListItem {
 
     public void setApplicationContext(final Context applicationContext) {
 
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     @Override

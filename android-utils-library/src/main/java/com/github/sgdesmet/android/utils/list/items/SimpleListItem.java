@@ -45,7 +45,7 @@ public class SimpleListItem implements ListItem {
         this.title = title;
         this.description = description;
         this.onClickListener = onClickListener;
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     public SimpleListItem(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
@@ -55,7 +55,7 @@ public class SimpleListItem implements ListItem {
         this.title = title;
         this.description = description;
         this.clickable = clickable;
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
         this.onClickListener = onClickListener;
         this.tag = tag;
     }
@@ -67,7 +67,7 @@ public class SimpleListItem implements ListItem {
 
     public void setApplicationContext(final Context applicationContext) {
 
-        this.applicationContext = applicationContext;
+        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     public String getImageUrl() {
