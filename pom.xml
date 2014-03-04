@@ -7,7 +7,7 @@
     <groupId>com.github.sgdesmet</groupId>
 	<artifactId>android</artifactId>
 	<packaging>pom</packaging>
-	<version>0.6.19</version>
+	<version>0.6.20</version>
 
     <name>Android Utils</name>
 	<description>Collection of Utilities for Android</description>

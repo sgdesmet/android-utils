@@ -141,6 +141,7 @@ public class BitmapUtils {
             options.inTempStorage = new byte[16*1024];
             options.inPurgeable = true;
             options.inInputShareable = true;
+            options.inScaled = false;
             return BitmapFactory.decodeByteArray(image, 0, image.length, options);
         }
         return null;
