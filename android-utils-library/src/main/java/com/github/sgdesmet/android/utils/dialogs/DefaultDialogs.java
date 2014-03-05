@@ -44,7 +44,7 @@ public class DefaultDialogs {
         public static final DefaultDialogs INSTANCE = new DefaultDialogs();
     }
 
-    public static DefaultDialogs getInstance() {
+    public static DefaultDialogs get() {
 
         return SingletonHolder.INSTANCE;
     }
@@ -227,7 +227,7 @@ public class DefaultDialogs {
 
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    dismiss();
+                    DefaultDialogs.get().dismiss();
                     if (terminateApp && getSherlockActivity() != null)
                         getSherlockActivity().finish();
                 }
