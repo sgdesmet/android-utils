@@ -5,12 +5,12 @@ import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import com.actionbarsherlock.app.SherlockDialogFragment;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import org.jetbrains.annotations.Nullable;
@@ -149,7 +149,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showTwoButtonDialog(final Context context, final String title, final String message, final String yesText, final String noText,
+    public void showTwoButtonDialog(final String title, final String message, final String yesText, final String noText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm) {
 
@@ -221,15 +221,15 @@ public class DefaultDialogs {
             final int messageResource = getArguments().getInt( MESSAGE );
             final boolean terminateApp = getArguments().getBoolean( TERMINATE );
 
-            AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+            AlertDialog.Builder builder = new AlertDialog.Builder( getSherlockActivity() );
             builder.setCancelable( true ).setMessage( messageResource );
             builder.setNeutralButton( R.string.ok, new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     dismiss();
-                    if (terminateApp && getActivity() != null)
-                        getActivity().finish();
+                    if (terminateApp && getSherlockActivity() != null)
+                        getSherlockActivity().finish();
                 }
             } );
             setCancelable( true );
@@ -270,7 +270,7 @@ public class DefaultDialogs {
 
             int titleResource = getArguments().getInt( TITLE );
             boolean cancelable = getArguments().getBoolean( CANCELABLE );
-            ProgressDialog dialog = new ProgressDialog( getActivity() );
+            ProgressDialog dialog = new ProgressDialog( getSherlockActivity() );
             dialog.setMessage( getString( titleResource, true ) );
             dialog.setIndeterminate( true );
             dialog.setCancelable( cancelable );
@@ -321,7 +321,7 @@ public class DefaultDialogs {
 
             if (neutralListener != null) {
                 setCancelable( cancelable );
-                AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+                AlertDialog.Builder builder = new AlertDialog.Builder( getSherlockActivity() );
                 builder.setCancelable( cancelable )
                        .setTitle( title )
                        .setMessage( message )
@@ -394,7 +394,7 @@ public class DefaultDialogs {
 
             if (yesListener != null && noListener != null) {
                 setCancelable( cancelable );
-                AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+                AlertDialog.Builder builder = new AlertDialog.Builder( getSherlockActivity() );
                 builder.setCancelable( cancelable )
                        .setTitle( title )
                        .setMessage( message )
@@ -422,7 +422,7 @@ public class DefaultDialogs {
     }
 
 
-    protected static class BaseDialogFragment extends DialogFragment {
+    protected static class BaseDialogFragment extends SherlockDialogFragment {
 
         public BaseDialogFragment() {
 
