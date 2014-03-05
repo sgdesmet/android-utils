@@ -29,15 +29,6 @@ public class DefaultDialogs {
     private static final String YESNO = "yesno";
     private static final String OKAY  = "okay";
     WeakReference<BaseDialogFragment> dialogFragment;
-    Context                           context;
-
-    /**
-     * Get the current context.
-     */
-    public Context getContext() {
-
-        return context;
-    }
 
     private static final String TAG = DefaultDialogs.class.getSimpleName();
 
@@ -76,14 +67,6 @@ public class DefaultDialogs {
             dialogFragment = new WeakReference<BaseDialogFragment>( baseDialogFragment );
         else
             dialogFragment = null;
-    }
-
-    /**
-     * Set the context for the dialogs. Use a @code{android.view.ContextThemeWrapper} to set a custom theme.
-     */
-    public static void init(Context context) {
-
-        getInstance().context = context;
     }
 
     public void showProgressDialog(int resource, boolean cancelable, FragmentManager fm) {
@@ -130,7 +113,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showOneButtonDialog(final int titleResource, final int messageResource, final int buttonResourceText,
+    public void showOneButtonDialog(final Context context, final int titleResource, final int messageResource, final int buttonResourceText,
                                     final DialogInterface.OnClickListener buttonListener, FragmentManager fm) {
 
         dismiss();
@@ -153,7 +136,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showTwoButtonDialog(final int titleResource, final int messageResource, final int yesResourceText, final int noResourceText,
+    public void showTwoButtonDialog(final Context context, final int titleResource, final int messageResource, final int yesResourceText, final int noResourceText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm) {
 
@@ -166,7 +149,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showTwoButtonDialog(final String title, final String message, final String yesText, final String noText,
+    public void showTwoButtonDialog(final Context context, final String title, final String message, final String yesText, final String noText,
                                     final DialogInterface.OnClickListener yesListener, final DialogInterface.OnClickListener noListener,
                                     FragmentManager fm) {
 
@@ -178,7 +161,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showCustomOneButtonDialog(final int titleResource, final ViewProvider contentView, final int yesResourceText,
+    public void showCustomOneButtonDialog(final Context context, final int titleResource, final ViewProvider contentView, final int yesResourceText,
                                           final DialogInterface.OnClickListener yesListener, FragmentManager fm) {
 
         dismiss();
@@ -190,7 +173,7 @@ public class DefaultDialogs {
         }
     }
 
-    public void showCustomTwoButtonDialog(final int titleResource, final ViewProvider contentView, final int yesResourceText,
+    public void showCustomTwoButtonDialog(final Context context, final int titleResource, final ViewProvider contentView, final int yesResourceText,
                                           final int noResourceText, final DialogInterface.OnClickListener yesListener,
                                           final DialogInterface.OnClickListener noListener, FragmentManager fm) {
 
