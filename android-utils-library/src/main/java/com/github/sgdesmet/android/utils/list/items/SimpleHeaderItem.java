@@ -47,7 +47,7 @@ public class SimpleHeaderItem implements ListItem {
     public View inflate(final Context context, final View convertView, final ViewGroup parent) {
 
         View rowView = convertView;
-        if (convertView == null ) {
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from( context );
             ViewHolder holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_header, null );
@@ -59,7 +59,8 @@ public class SimpleHeaderItem implements ListItem {
 
     @Override
     public void configure(final View inflatedView) {
-        if (inflatedView != null){
+
+        if (inflatedView != null) {
             ViewHolder holder = (ViewHolder) inflatedView.getTag();
             holder.title.setText( title );
         }
@@ -107,7 +108,8 @@ public class SimpleHeaderItem implements ListItem {
         return title != null? title.hashCode(): 0;
     }
 
-    public static ListItem header(final Context applicationContext, final CharSequence title){
-        return new SimpleHeaderItem( title, applicationContext );
+    public static ListItem header(final CharSequence title) {
+
+        return new SimpleHeaderItem( title );
     }
 }
