@@ -23,7 +23,7 @@ public class SimpleHeaderItem implements ListItem {
     CharSequence title;
     private Serializable tag;
 
-    public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
+    public SimpleHeaderItem(final CharSequence title) {
 
         this.title = title;
     }
