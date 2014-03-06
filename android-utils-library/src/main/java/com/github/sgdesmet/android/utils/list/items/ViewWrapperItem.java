@@ -1,8 +1,8 @@
 package com.github.sgdesmet.android.utils.list.items;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import com.github.sgdesmet.android.utils.list.ListItem;
 import java.io.Serializable;
 
@@ -25,7 +25,7 @@ public abstract class ViewWrapperItem implements ListItem {
     }
 
     @Override
-    public View inflate(final View convertView, final ViewGroup parent) {
+    public View inflate(final Context context, final View convertView, final ViewGroup parent) {
 
         return getView(convertView, parent);
     }

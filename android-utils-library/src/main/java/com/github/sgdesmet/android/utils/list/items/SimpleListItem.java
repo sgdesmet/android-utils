@@ -29,8 +29,6 @@ public class SimpleListItem implements ListItem {
 
     boolean clickable = true;
 
-    Context applicationContext;
-
     protected View.OnClickListener onClickListener;
     private   Serializable         tag;
 
@@ -38,36 +36,24 @@ public class SimpleListItem implements ListItem {
 
     }
 
-    public SimpleListItem(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+    public SimpleListItem(final String imageUrl, final CharSequence title, final CharSequence description,
                           final View.OnClickListener onClickListener) {
 
         this.imageUrl = imageUrl;
         this.title = title;
         this.description = description;
         this.onClickListener = onClickListener;
-        this.applicationContext = applicationContext.getApplicationContext();
     }
 
-    public SimpleListItem(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+    public SimpleListItem(final String imageUrl, final CharSequence title, final CharSequence description,
                           final View.OnClickListener onClickListener, final boolean clickable, final Serializable tag) {
 
         this.imageUrl = imageUrl;
         this.title = title;
         this.description = description;
         this.clickable = clickable;
-        this.applicationContext = applicationContext.getApplicationContext();
         this.onClickListener = onClickListener;
         this.tag = tag;
-    }
-
-    public Context getApplicationContext() {
-
-        return applicationContext;
-    }
-
-    public void setApplicationContext(final Context applicationContext) {
-
-        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     public String getImageUrl() {
@@ -129,16 +115,12 @@ public class SimpleListItem implements ListItem {
     }
 
     @Override
-    public View inflate(final View convertView, final ViewGroup parent) {
+    public View inflate(final Context context, final View convertView, final ViewGroup parent) {
 
         ViewHolder holder;
         View rowView = convertView;
         if (rowView == null) {
-            LayoutInflater inflater = null;
-            if (parent != null && parent.getContext() != null)
-                inflater = (LayoutInflater) parent.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            else
-                inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = LayoutInflater.from( context );
             holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_text_image, null );
             holder.imageView = (ImageView) rowView.findViewById( R.id.utils_row_image );
@@ -156,8 +138,7 @@ public class SimpleListItem implements ListItem {
             ViewHolder holder = (ViewHolder) inflatedView.getTag();
             if (!this.equals( holder.content )) {
                 if (imageUrl != null)
-                    ImageLoaderFactory.get()
-                                      .loadImage( imageUrl, holder.imageView, ImageLoader.NO_RESOURCE, ImageLoader.NO_RESOURCE );
+                    ImageLoaderFactory.get().loadImage( imageUrl, holder.imageView, ImageLoader.NO_RESOURCE, ImageLoader.NO_RESOURCE );
                 else
                     holder.imageView.setVisibility( View.GONE );
                 if (title != null)
@@ -198,9 +179,6 @@ public class SimpleListItem implements ListItem {
 
         SimpleListItem that = (SimpleListItem) o;
 
-        if (applicationContext != null? !applicationContext.equals( that.applicationContext ): that.applicationContext != null) {
-            return false;
-        }
         if (description != null? !description.equals( that.description ): that.description != null) {
             return false;
         }
@@ -223,29 +201,28 @@ public class SimpleListItem implements ListItem {
         int result = imageUrl != null? imageUrl.hashCode(): 0;
         result = 31 * result + (title != null? title.hashCode(): 0);
         result = 31 * result + (description != null? description.hashCode(): 0);
-        result = 31 * result + (applicationContext != null? applicationContext.hashCode(): 0);
         result = 31 * result + (onClickListener != null? onClickListener.hashCode(): 0);
         return result;
     }
 
-    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
-                                      final View.OnClickListener onClickListener) {
+    public static ListItem item(final String imageUrl, final CharSequence title, final CharSequence description,
+                                final View.OnClickListener onClickListener) {
 
-        return new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+        return new SimpleListItem( imageUrl, title, description, onClickListener );
     }
 
-    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+    public static ListItem item(final String imageUrl, final CharSequence title, final CharSequence description,
                                 final View.OnClickListener onClickListener, boolean clickable) {
 
-        SimpleListItem item = new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+        SimpleListItem item = new SimpleListItem( imageUrl, title, description, onClickListener );
         item.setClickable( clickable );
         return item;
     }
 
-    public static ListItem item(final Context applicationContext, final String imageUrl, final CharSequence title, final CharSequence description,
+    public static ListItem item(final String imageUrl, final CharSequence title, final CharSequence description,
                                 final View.OnClickListener onClickListener, boolean clickable, Serializable tag) {
 
-        SimpleListItem item = new SimpleListItem( applicationContext, imageUrl, title, description, onClickListener );
+        SimpleListItem item = new SimpleListItem( imageUrl, title, description, onClickListener );
         item.setClickable( clickable );
         item.setTag( tag );
         return item;

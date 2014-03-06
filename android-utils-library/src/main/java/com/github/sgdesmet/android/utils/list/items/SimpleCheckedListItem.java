@@ -27,10 +27,10 @@ public class SimpleCheckedListItem extends SimpleListItem {
 
     protected CompoundButton.OnCheckedChangeListener checkedChangeListener;
 
-    public SimpleCheckedListItem(final Context applicationContext, final String imageUrl, final String title, final String description, boolean checked,
+    public SimpleCheckedListItem(final String imageUrl, final String title, final String description, boolean checked,
                                  final View.OnClickListener onClickListener, final View.OnClickListener checkBoxListener) {
 
-        super(applicationContext, imageUrl, title, description, onClickListener );
+        super(imageUrl, title, description, onClickListener );
         this.checked = checked;
         this.checkBoxListener = checkBoxListener;
     }
@@ -70,16 +70,12 @@ public class SimpleCheckedListItem extends SimpleListItem {
     }
 
     @Override
-    public View inflate(final View convertView, final ViewGroup parent) {
+    public View inflate(final Context context, final View convertView, final ViewGroup parent) {
 
         ViewHolder holder;
         View rowView = convertView;
         if (rowView == null) {
-            LayoutInflater inflater;
-            if (parent != null && parent.getContext() != null)
-                inflater = (LayoutInflater) parent.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            else
-                inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = LayoutInflater.from( context );
             holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_text_image_checkbox, null );
             holder.imageView = (ImageView) rowView.findViewById( R.id.utils_row_image );
@@ -154,9 +150,9 @@ public class SimpleCheckedListItem extends SimpleListItem {
         return result;
     }
 
-    public static ListItem item(final Context applicationContext, final String imageUrl, final String title, final String description, boolean checked,
+    public static ListItem item(final String imageUrl, final String title, final String description, boolean checked,
                                       final View.OnClickListener onClickListener, final View.OnClickListener checkBoxListener) {
 
-        return new SimpleCheckedListItem( applicationContext, imageUrl, title, description, checked, onClickListener, checkBoxListener );
+        return new SimpleCheckedListItem(  imageUrl, title, description, checked, onClickListener, checkBoxListener );
     }
 }

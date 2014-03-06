@@ -21,13 +21,11 @@ public class SimpleHeaderItem implements ListItem {
     public static final int ITEM_VIEW_TYPE = 1;
 
     CharSequence title;
-    Context      applicationContext;
     private Serializable tag;
 
     public SimpleHeaderItem(final CharSequence title, final Context applicationContext) {
 
         this.title = title;
-        this.applicationContext = applicationContext.getApplicationContext();
     }
 
     public CharSequence getTitle() {
@@ -40,31 +38,17 @@ public class SimpleHeaderItem implements ListItem {
         this.title = title;
     }
 
-    public Context getApplicationContext() {
-
-        return applicationContext;
-    }
-
-    public void setApplicationContext(final Context applicationContext) {
-
-        this.applicationContext = applicationContext.getApplicationContext();
-    }
-
     @Override
     public void onClick() {
         //noop
     }
 
     @Override
-    public View inflate(final View convertView, final ViewGroup parent) {
+    public View inflate(final Context context, final View convertView, final ViewGroup parent) {
 
         View rowView = convertView;
         if (convertView == null ) {
-            LayoutInflater inflater;
-            if (parent != null && parent.getContext() != null)
-                inflater = (LayoutInflater) parent.getContext().getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-            else
-                inflater = (LayoutInflater) applicationContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = LayoutInflater.from( context );
             ViewHolder holder = new ViewHolder();
             rowView = inflater.inflate( R.layout.simple_row_header, null );
             holder.title = (TextView) rowView.findViewById( R.id.utils_row_header );
