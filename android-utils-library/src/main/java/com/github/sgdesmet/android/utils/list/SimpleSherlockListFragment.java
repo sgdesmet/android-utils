@@ -29,7 +29,7 @@ public class SimpleSherlockListFragment extends SherlockListFragment {
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
 
         super.onListItemClick( l, v, position, id );
-        if (getSimpleListAdapter() != null && getSimpleListAdapter().getItems() != null)
-            getSimpleListAdapter().getItems().get( position ).onClick();
+        if (getSimpleListAdapter() != null && getSimpleListAdapter().getItem(position) != null)
+            getSimpleListAdapter().getItem(position).onClick();
     }
 }
