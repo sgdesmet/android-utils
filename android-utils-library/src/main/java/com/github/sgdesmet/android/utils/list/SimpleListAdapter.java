@@ -20,8 +20,7 @@ public class SimpleListAdapter extends ArrayAdapter<ListItem> {
 
     private final List<Class<? extends ListItem>> viewTypes;
 
-    public SimpleListAdapter(final Context context, @NotNull final List<ListItem> objects,
-                             final List<Class<? extends ListItem>> viewTypes) {
+    public SimpleListAdapter(final Context context, final List<Class<? extends ListItem>> viewTypes, @NotNull final List<ListItem> objects) {
 
         super( context, -1, objects );
 
