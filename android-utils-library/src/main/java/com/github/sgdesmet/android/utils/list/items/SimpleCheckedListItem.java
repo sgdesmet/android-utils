@@ -5,8 +5,8 @@ import android.view.*;
 import android.widget.*;
 import com.github.sgdesmet.android.utils.R;
 import com.github.sgdesmet.android.utils.list.ListItem;
-import com.github.sgdesmet.android.utils.service.image.loader.ImageLoader;
-import com.github.sgdesmet.android.utils.service.image.loader.ImageLoaderFactory;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 
 /**
@@ -97,10 +97,15 @@ public class SimpleCheckedListItem extends SimpleListItem {
             holder.checkBox.setOnCheckedChangeListener( getCheckedChangeListener() );
 
             if (!this.equals( holder.content )) {
-                if (imageUrl != null)
-                    ImageLoaderFactory.get()
-                                      .loadImage( imageUrl, holder.imageView, ImageLoader.NO_RESOURCE, ImageLoader.NO_RESOURCE );
-                else
+                if (imageUrl != null){
+                    DisplayImageOptions imageOptions = new DisplayImageOptions.Builder().cacheInMemory( true )
+                                                                                        .cacheOnDisc( true )
+                                                                                        .resetViewBeforeLoading( true )
+                                                                                        .build();
+                    ImageLoader.getInstance()
+                               .displayImage( imageUrl, holder.imageView, imageOptions );
+
+                }else
                     holder.imageView.setVisibility( View.GONE );
                 if (title != null)
                     holder.title.setText( title );

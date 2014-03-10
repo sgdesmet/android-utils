@@ -7,7 +7,7 @@
     <groupId>com.github.sgdesmet</groupId>
 	<artifactId>android</artifactId>
 	<packaging>pom</packaging>
-	<version>0.6.22</version>
+	<version>0.6.23</version>
 
     <name>Android Utils</name>
 	<description>Collection of Utilities for Android</description>
@@ -53,6 +53,7 @@
         <disklrucache.version>1.3.1</disklrucache.version>
         <gson.version>2.2.2</gson.version>
         <actionbarsherlock.version>4.4.0</actionbarsherlock.version>
+        <universal-image-loader.version>1.9.1</universal-image-loader.version>
         <annotations.version>13.0</annotations.version>
     </properties>
 
@@ -94,6 +95,13 @@
                 </exclusions>
                 <type>jar</type>
             </dependency>
+
+            <dependency>
+                <groupId>com.nostra13.universalimageloader</groupId>
+                <artifactId>universal-image-loader</artifactId>
+                <version>${universal-image-loader.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

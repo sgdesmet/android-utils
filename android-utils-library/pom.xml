@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.github.sgdesmet</groupId>
         <artifactId>android</artifactId>
-        <version>0.6.22</version>
+        <version>0.6.23</version>
     </parent>
 
 	<groupId>com.github.sgdesmet.android</groupId>
 	<artifactId>utils</artifactId>
 	<packaging>apklib</packaging>
-	<version>0.6.22</version>
+	<version>0.6.23</version>
 
 	<dependencies>
 
@@ -38,6 +38,11 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.nostra13.universalimageloader</groupId>
+            <artifactId>universal-image-loader</artifactId>
+        </dependency>
+
 	</dependencies>
 
 	<build>
