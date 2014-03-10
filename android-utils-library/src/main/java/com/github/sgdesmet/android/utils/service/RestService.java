@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
-import com.google.gson.*;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -104,7 +104,12 @@ public class RestService extends IntentService {
         String username = extras.getString( BASIC_AUTH_USERNAME );
         String password = extras.getString( BASIC_AUTH_PASSWORD );
 
-        RestResource resource = RestResource.build().gson( getGson() ).url( url ).query( queryParams ).headers( headers ).form( formParams );
+        RestResource resource = RestResource.build()
+                                            .gson( getGson() )
+                                            .url( url )
+                                            .query( queryParams )
+                                            .headers( headers )
+                                            .form( formParams );
         if (username != null || password != null) {
             resource.basicAuth( username, password );
         }
@@ -186,12 +191,8 @@ public class RestService extends IntentService {
 
             Bundle bundle = new Bundle();
             for (String key : headers.keySet()) {
-                String value = "";
-                for (String headerValue : headers.get( key )) {
-                    value += headerValue + ",";
-                }
-                value = value.substring( 0, Math.max( 0, value.length() - 1 ) );
-                bundle.putString( key, value );
+                List<String> values = headers.get( key );
+                bundle.putStringArray( key, values.toArray( new String[values.size()] ) );
             }
             return bundle;
         }
